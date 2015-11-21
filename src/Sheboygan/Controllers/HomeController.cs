@@ -9,11 +9,13 @@ namespace Sheboygan.Controllers
 {
     public class HomeController : Controller
     {
+        public IActionResult TaskPaneHome() => View();
+
         public IActionResult Index()
         {
             string mapDef = "Library://Samples/Sheboygan/Maps/Sheboygan.MapDefinition";
 
-            var model = new ViewerModel(mapDef);
+            var model = new ViewerModel(mapDef, Url.Action(nameof(TaskPaneHome)));
             return View(model);
         }
     }

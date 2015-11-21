@@ -8,7 +8,6 @@
     <link href="~/lib/font-awesome/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="~/lib/openlayers3-dist/ol.css" type="text/css">
     <link rel="stylesheet" href="~/lib/sidebar-v2/ol3-sidebar.min.css" />
-
     <style>
         body {
             padding: 0;
@@ -21,9 +20,12 @@
             font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;
         }
 
+        #taskPaneRoot { margin-left: -20px; margin-right: -20px; }
         #layerRoot { list-style-type: none; margin-top: 10px; margin-left: 10px; }
         #layerRoot li { list-style-type: none; }
         #layerRoot ul.groupChildren { margin-top: 0; margin-bottom: 0; }
+        #taskPaneFrame { width: 100%; height: 100%; border: none; }
+        .spacer-below { border-bottom: 1px solid white; }
     </style>
 </head>
 <body>
@@ -32,7 +34,8 @@
         <div class="sidebar-tabs">
             <ul role="tablist">
                 <li><a href="#taskpane" role="tab"><i class="fa fa-list-alt"></i></a></li>
-                <li><a href="#layers" role="tab"><i class="fa fa-bars"></i></a></li>
+                <li><a href="#selection" role="tab"><i class="fa fa-table"></i></a></li>
+                <li class="spacer-below"><a href="#layers" role="tab"><i class="fa fa-bars"></i></a></li>
             </ul>
 
             <ul role="tablist">
@@ -51,9 +54,22 @@
 
                 </div>
             </div>
-
+            <div class="sidebar-pane" id="selection">
+                <h1 class="sidebar-header">
+                    Selection
+                    <div class="sidebar-close"><i class="fa fa-caret-left"></i></div>
+                </h1>
+                <div id="selectionRoot">
+                    <p>You have not selected any features</p>
+                </div>
+            </div>
             <div class="sidebar-pane" id="taskpane">
-                <h1 class="sidebar-header"><span class="taskpane-title">Tasks</span><div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
+                <h1 class="sidebar-header"><span class="taskpane-title">Task Pane</span><div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
+                <div id="taskPaneRoot">
+                    <iframe id="taskPaneFrame" src="@Model.HomeUrl">
+
+                    </iframe>
+                </div>
             </div>
 
             <div class="sidebar-pane" id="settings">
@@ -253,6 +269,10 @@
             $("#scale").text(scale);
         }
 
+        function syncTaskPaneHeight() {
+            $("#taskPaneFrame").height($("#sidebar").height() - 55);
+        }
+
         var mglayers = [];
 
         function loadMap(rtMapInfo) {
@@ -281,7 +301,6 @@
             var tileHeight = rtMapInfo.RuntimeMap.TileHeight || 300;
             var metersPerUnit = rtMapInfo.RuntimeMap.CoordinateSystem.MetersPerUnit;
             var dpi = rtMapInfo.RuntimeMap.DisplayDpi;
-            var projection = null;
             var zOrigin = finiteScales.length - 1;
             var inPerUnit = 39.37 * metersPerUnit;
             var resolutions = new Array(finiteScales.length);
@@ -289,7 +308,7 @@
                 resolutions[i] = finiteScales[i] / inPerUnit / dpi;
             }
 
-            projection = "EPSG:" + rtMapInfo.RuntimeMap.CoordinateSystem.EpsgCode;
+            var projection = "EPSG:" + rtMapInfo.RuntimeMap.CoordinateSystem.EpsgCode;
             
             var tileGrid = new ol.tilegrid.TileGrid({
                 origin: ol.extent.getTopLeft(extent),
@@ -399,6 +418,7 @@
                 mgTiledLayers: mgTiledLayers
             });
             legend.update();
+            syncTaskPaneHeight();
         }
         var sidebar = $('#sidebar').sidebar();
     </script>

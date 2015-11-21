@@ -1,9 +1,10 @@
 {
   "name": "ASP.NET",
   "private": true,
-  "dependencies": {
-    "openlayers3-dist": "3.10.1",
-    "font-awesome": "4.4.0",
-    "jquery": "2.1.4"
-  }
+    "dependencies": {
+        "bootstrap": "3.3.5",
+        "openlayers3-dist": "3.10.1",
+        "font-awesome": "4.4.0",
+        "jquery": "2.1.4"
+    }
 }

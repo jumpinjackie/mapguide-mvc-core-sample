@@ -7,10 +7,13 @@ namespace Sheboygan.Models
 {
     public class ViewerModel
     {
-        public ViewerModel(string mapDefinition)
+        public ViewerModel(string mapDefinition, string homeUrl)
         {
             this.MapDefinition = mapDefinition;
+            this.HomeUrl = homeUrl;
         }
+
+        public string HomeUrl { get; }
         
         public string MapDefinition { get; }
     }
