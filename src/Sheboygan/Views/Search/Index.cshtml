@@ -1,0 +1,87 @@
+﻿@model Sheboygan.Models.MapGuideViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Search</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-theme.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="~/lib/mg-viewer-api/taskpane.css" />
+    <script type="text/javascript" src="~/lib/mg-viewer-api/viewerapi.js"></script>
+    <script type="text/javascript">
+
+        var viewer = null;
+
+        function SearchBy(param) {
+            var value = document.getElementById(param).value;
+            window.location.href = "@Url.Action("Results")?By=" + param + "&Query=" + value + "&session=@Model.Session&mapname=@Model.MapName";
+        }
+
+        function DrawQueryBox() {
+            if (!viewer)
+                viewer = new ViewerAPI();
+
+            viewer.digitizeRectangle(function (rect) {
+                document.getElementById("BBOX").value = rect.Point1.X + "," + rect.Point1.Y + "," + rect.Point2.X + "," + rect.Point2.Y;
+            });
+        }
+
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Search by owner
+            </div>
+            <div class="panel-body">
+                <p>Example: schmitt</p>
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" class="form-control input-sm" id="OWNER" name="OWNER" value="" />
+                        <span class="input-group-btn">
+                            <a title="Search" class="btn btn-success btn-sm btn-search" onclick="SearchBy('OWNER')"><i class="fa fa-search"></i></a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Search by address
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" class="form-control input-sm" id="ADDRESS" name="ADDRESS" value="" />
+                        <span class="input-group-btn">
+                            <a title="Search" class="btn btn-success btn-sm btn-search" onclick="SearchBy('ADDRESS')"><i class="fa fa-search"></i></a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Search by bounding box
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" class="form-control input-sm" id="BBOX" name="BBOX" readonly="readonly" value="" />
+                        <span class="input-group-btn">
+                            <a title="Search" class="btn btn-primary btn-sm btn-search" id="btnDrawBBOX" onclick="DrawQueryBox()"><i class="fa fa-pencil"></i></a>
+                            <a title="Search" class="btn btn-success btn-sm btn-search" onclick="SearchBy('BBOX')"><i class="fa fa-search"></i></a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

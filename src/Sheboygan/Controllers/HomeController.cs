@@ -9,7 +9,10 @@ namespace Sheboygan.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult TaskPaneHome() => View();
+        public IActionResult TaskPaneHome(string session, string mapname)
+        {
+            return View(new MapGuideViewModel() { Session = session, MapName = mapname });
+        }
 
         public IActionResult Index()
         {

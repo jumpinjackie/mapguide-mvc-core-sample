@@ -66,7 +66,7 @@
             <div class="sidebar-pane" id="taskpane">
                 <h1 class="sidebar-header"><span class="taskpane-title">Task Pane</span><div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
                 <div id="taskPaneRoot">
-                    <iframe id="taskPaneFrame" src="@Model.HomeUrl">
+                    <iframe id="taskPaneFrame">
 
                     </iframe>
                 </div>
@@ -89,13 +89,74 @@
 
     <script type="text/javascript">
 
+        //This shims the AJAX viewer API
+        function ViewerShim() {
+            this.ZoomToView = function (x, y, scale) {
+                console.log("ZoomToView");
+            };
+            this.Refresh = function () {
+                console.log("Refresh");
+            };
+            this.GetMapFrame = function () { return this; };
+            this.DigitizeLine = function (handler) {
+                console.log("DigitizeLine");
+            };
+            this.DigitizeLineString = function (handler) {
+                console.log("DigitizeLineString");
+            };
+            this.DigitizeRectangle = function (handler) {
+                console.log("DigitizeRectangle");
+            };
+            this.DigitizePolygon = function (handler) {
+                console.log("DigitizePolygon");
+            };
+            this.DigitizeCircle = function (handler) {
+                console.log("DigitizeCircle");
+            };
+            this.SetSelectionXML = function (handler) {
+                console.log("SetSelectionXML");
+            };
+        }
+
+        //This allows JS from the task pane to assume the same double-frame hierarchy
+        //that task pane content assumed in the old AJAX viewer
+        var parent = new ViewerShim();
+
+        function TaskPane() {
+            this.frame = $("#taskPaneFrame");
+        }
+
+        TaskPane.prototype.setHomeUrl = function (homeUrl) {
+            this.homeUrl = homeUrl;
+            this.navigate(this.homeUrl);
+        };
+
+        TaskPane.prototype.navigate = function (url) {
+            this.frame.attr("src", url);
+        };
+
+        TaskPane.prototype.back = function () {
+            this.frame[0].contentWindow.history.go(-1);
+        };
+
+        TaskPane.prototype.forward = function () {
+            this.frame[0].contentWindow.history.go(1);
+        };
+
+        TaskPane.prototype.home = function () {
+            this.navigate(this.homeUrl);
+        };
+
         //Various features you can include in the CREATERUNTIMEMAP response.
         var REQ_NONE = 0;                   //Nothing. This the default.
         var REQ_LAYER_STRUCTURE = 1;        //Information about layers and groups (required for the mask values below to have any effect)
         var REQ_LAYER_ICONS = 2;            //Icons for each layer (has no effect if REQ_LAYER_STRUCTURE is not in the bitmask)
         var REQ_LAYER_FEATURE_SOURCE = 4;   //Feature Source information for each layer (has no effect if REQ_LAYER_STRUCTURE is not in the bitmask)
 
+        var _taskPane;
+
         $(document).ready(function () {
+            _taskPane = new TaskPane();
             //Have a play with the bitmask values to see the differences in JSON payload size
             //and to see how our legend control gracefully handles such situations
             //createMap(REQ_NONE);
@@ -139,7 +200,7 @@
                     else
                         return val;
                 }
-                    
+
                 return null;
             };
 
@@ -173,7 +234,7 @@
                             MaxScale: deArrayify(scaleR.MaxScale, (scaleR.MaxScale[0] == "infinity") ? null : PARSE_FLOAT)
                         };
                         sr.FeatureStyle = [];
-                        
+
                         for (var j = 0; j < scaleR.FeatureStyle.length; j++) {
                             var featureTS = scaleR.FeatureStyle[j];
                             var fts = {
@@ -210,7 +271,7 @@
             var clean = {};
             clean.RuntimeMap = {};
             var rtm = data.RuntimeMap;
-            
+
             clean.RuntimeMap.BackgroundColor = deArrayify(rtm.BackgroundColor);
 
             var cs = rtm.CoordinateSystem[0];
@@ -276,6 +337,7 @@
         var mglayers = [];
 
         function loadMap(rtMapInfo) {
+            _taskPane.setHomeUrl("@Model.HomeUrl?session=" + rtMapInfo.RuntimeMap.SessionId + "&mapname=" + rtMapInfo.RuntimeMap.Name);
             if (rtMapInfo.RuntimeMap.IconMimeType) {
                 gMimeType = rtMapInfo.RuntimeMap.IconMimeType;
                 $("#iconFormat").html(gMimeType);
@@ -309,7 +371,7 @@
             }
 
             var projection = "EPSG:" + rtMapInfo.RuntimeMap.CoordinateSystem.EpsgCode;
-            
+
             var tileGrid = new ol.tilegrid.TileGrid({
                 origin: ol.extent.getTopLeft(extent),
                 resolutions: resolutions,
@@ -337,7 +399,7 @@
 
             /*
             if (groupLayers.length > 0) {
-                groupLayers.push( 
+                groupLayers.push(
                     new ol.layer.Tile({
                         source: new ol.source.TileDebug({
                             tileGrid: tileGrid,
@@ -353,7 +415,7 @@
                 );
             }
             */
-            
+
             var overlay = new ol.layer.Image({
                 name: "MapGuide Dynamic Overlay",
                 extent: extent,

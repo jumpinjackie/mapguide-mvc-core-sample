@@ -26,6 +26,7 @@ namespace Sheboygan
             else
                 throw new NotSupportedException("MapGuide is not supported on your platform");
             app.UseStaticFiles();
+            app.UseDeveloperExceptionPage();
             app.UseMvcWithDefaultRoute();
         }
 
