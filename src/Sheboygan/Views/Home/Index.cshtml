@@ -89,15 +89,40 @@
 
     <script type="text/javascript">
 
+        var agentUrl = "@Url.Action("Agent", "MapAgent")";
+
         //This shims the AJAX viewer API
         function ViewerShim() {
+            this._map = null;
+            this._dpi = null;
+            this._inPerUnit = null;
+            this._mapname = null;
+            this._session = null;
+            this.Init = function (map, session, mapname, dpi, inPerUnit) {
+                this._map = map;
+                this._dpi = dpi;
+                this._inPerUnit = inPerUnit;
+                this._session = session;
+                this._mapname = mapname;
+            };
+            this.ResolutionToScale = function (res) {
+                return res * this._dpi * this._inPerUnit;
+            };
+            this.ScaleToResolution = function (scale) {
+                return scale / this._dpi / this._inPerUnit;
+            };
             this.ZoomToView = function (x, y, scale) {
-                console.log("ZoomToView");
+                var view = this._map.getView();
+                view.setCenter([x, y]);
+                view.setResolution(this.ScaleToResolution(scale));
             };
             this.Refresh = function () {
                 console.log("Refresh");
             };
             this.GetMapFrame = function () { return this; };
+            this.DigitizePoint = function (handler) {
+                console.log("DigitizePoint");
+            };
             this.DigitizeLine = function (handler) {
                 console.log("DigitizeLine");
             };
@@ -113,14 +138,23 @@
             this.DigitizeCircle = function (handler) {
                 console.log("DigitizeCircle");
             };
-            this.SetSelectionXML = function (handler) {
-                console.log("SetSelectionXML");
+            this.SetSelectionXML = function (xml) {
+                $.post(agentUrl, {
+                    "OPERATION": "QUERYMAPFEATURES",
+                    "VERSION": "2.6.0",
+                    "SESSION": this._session,
+                    "MAPNAME": this._mapname,
+                    "FEATUREFILTER": xml,
+                    "PERSIST": "1"
+                });
             };
         }
 
+        var api = new ViewerShim();
+
         //This allows JS from the task pane to assume the same double-frame hierarchy
         //that task pane content assumed in the old AJAX viewer
-        var parent = new ViewerShim();
+        var parent = api;
 
         function TaskPane() {
             this.frame = $("#taskPaneFrame");
@@ -163,8 +197,6 @@
             //createMap(REQ_LAYER_STRUCTURE);
             createMap(REQ_LAYER_STRUCTURE | REQ_LAYER_FEATURE_SOURCE | REQ_LAYER_ICONS);
         });
-
-        var agentUrl = "@Url.Action("Agent", "MapAgent")";
 
         function createMap(reqFeatures) {
             $.getJSON(agentUrl, {
@@ -460,11 +492,12 @@
                 layers: mglayers,
                 view: view
             });
+            api.Init(map, rtMapInfo.RuntimeMap.SessionId, rtMapInfo.RuntimeMap.Name, dpi, inPerUnit);
             view.fit(extent, map.getSize());
             view.on("change:resolution", function (e) {
-                updateScale(view.getResolution() * dpi * inPerUnit);
+                updateScale(api.ResolutionToScale(view.getResolution()));
             });
-            updateScale(view.getResolution() * dpi * inPerUnit);
+            updateScale(api.ResolutionToScale(view.getResolution()));
 
             var mgTiledLayers = {};
             for (var i = 0; i < groupLayers.length; i++) {
