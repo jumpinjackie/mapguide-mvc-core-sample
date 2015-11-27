@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Builder;
+﻿using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Http;
 using Microsoft.Extensions.DependencyInjection;
 using OSGeo.MapGuide;
+using System;
+using System.Runtime.InteropServices;
 
 namespace Sheboygan
 {
@@ -22,7 +19,12 @@ namespace Sheboygan
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app)
         {
-            MapGuideApi.MgInitializeWebTier("C:\\Program Files\\OSGeo\\MapGuide\\Web\\www\\webconfig.ini");
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                MapGuideApi.MgInitializeWebTier("C:\\Program Files\\OSGeo\\MapGuide\\Web\\www\\webconfig.ini");
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                MapGuideApi.MgInitializeWebTier("/usr/local/mapguideopensource-3.1.0/webserverextensions/www/webconfig.ini");
+            else
+                throw new NotSupportedException("MapGuide is not supported on your platform");
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
         }
