@@ -1,0 +1,69 @@
+﻿@model Sheboygan.Models.DwfPlotViewModel
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>DWF Plot</title>
+    <link rel="stylesheet" href="~/lib/mg-viewer-api/taskpane.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-theme.css" />
+    <script type="text/javascript" src="~/lib/jquery/dist/jquery.js"></script>
+    <script type="text/javascript">
+
+    var session = "@Model.Session";
+    var mapname = "@Model.MapName";
+
+    function PlotCurrentView() {
+        var url = "@Url.Action("CurrentView")?session=" + session + "&mapname=" + mapname + "&uselayout=" + $("#chkUsePrintLayoutForView").is(":checked");
+        window.open(url);
+    }
+
+    function PlotAtScale() {
+        var url = "@Url.Action("AtScale")?session=" + session + "&mapname=" + mapname + "&uselayout=" + $("#chkUsePrintLayoutForScale").is(":checked") + "&scale=" + $("#scale").val();
+        window.open(url);
+    }
+
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Plot a view of the map</div>
+            <div class="panel-body">
+                <p>View center X: @Model.X</p>
+                <p>View center Y: @Model.Y</p>
+                <p>View scale: @Model.Scale</p>
+            </div>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">Plot the current map view</div>
+            <div class="panel-body">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="chkUsePrintLayoutForView" /> Use Print Layout
+                    </label>
+                </div>
+                <button class="btn btn-default btn-sm" onclick="PlotCurrentView()">Plot</button>
+            </div>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">Plot at a specified scale</div>
+            <div class="panel-body">
+                <label for="scale">Scale</label>
+                <select id="scale" name="scale">
+                    <option value="1000">1:1,000</option>
+                    <option value="8000">1:8,000</option>
+                    <option value="20000">1:20,000</option>
+                    <option value="25000">1:25,000</option>
+                </select>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="chkUsePrintLayoutForScale" /> Use Print Layout
+                    </label>
+                </div>
+                <button class="btn btn-default btn-sm" onclick="PlotAtScale()">Plot</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
