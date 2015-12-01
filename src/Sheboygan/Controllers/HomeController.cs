@@ -19,6 +19,13 @@ namespace Sheboygan.Controllers
             string mapDef = "Library://Samples/Sheboygan/Maps/Sheboygan.MapDefinition";
 
             var model = new ViewerModel(mapDef, Url.Action(nameof(TaskPaneHome)));
+
+            model.Toolbar = new ToolbarItemModel[]
+            {
+                new ActiveToolItemModel(ActiveTool.Zoom),
+                new ActiveToolItemModel(ActiveTool.Select)
+            };
+
             return View(model);
         }
     }
