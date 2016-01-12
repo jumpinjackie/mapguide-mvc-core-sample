@@ -1,0 +1,74 @@
+﻿@model Sheboygan.Models.SearchResultViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Search Results</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-theme.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="~/lib/mg-viewer-api/taskpane.css" />
+    <script type="text/javascript" src="~/lib/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="~/lib/mg-viewer-api/viewerapi.js"></script>
+    <script type="text/javascript">
+
+        var ZOOM_SCALE = 800.0;
+        var viewer = null;
+
+        $(function () {
+            viewer = new ViewerAPI();
+
+            $("body").on("click", ".zoom-action", function (e) {
+                var el = $(e.currentTarget);
+                var x = parseFloat(el.attr("data-zoom-x"));
+                var y = parseFloat(el.attr("data-zoom-y"));
+
+                viewer.zoomToView(x, y, ZOOM_SCALE);
+            });
+            $("body").on("click", ".select-action", function (e) {
+                var el = $(e.currentTarget);
+                var id = el.attr("data-select-id");
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("SelectFeature")",
+                    dataType: 'text', //Not xml, otherwise this is parsed as an XML document
+                    data: { id: id, session: "@Model.Session", mapname: "@Model.MapName" }
+                }).done(function (res) {
+                    viewer.setSelectionXml(res);
+                })
+                .fail(function (res) {
+                    alert("Failed to select feature");
+                });
+            });
+        });
+
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                @Model.Results.Count results found
+            </div>
+            <div class="panel-body">
+                <ul class="list-group">
+                    @foreach (var res in Model.Results)
+                    {
+                        <li class="list-group-item">
+                            <strong class="list-group-item-heading">@res.ID - @res.Owner</strong>
+                            <p class="list-group-item-text">@res.Address</p>
+                            <button class="btn btn-default btn-xs zoom-action" data-zoom-x="@res.X.Value" data-zoom-y="@res.Y.Value">Zoom</button>
+                            <button class="btn btn-default btn-xs select-action" data-select-id="@res.ID">Select</button>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
