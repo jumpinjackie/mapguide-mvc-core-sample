@@ -7,7 +7,8 @@
     "dependencies": {
         "Microsoft.AspNet.Server.Kestrel": "1.0.0-rc1-final",
         "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
-        "Microsoft.AspNet.StaticFiles": "1.0.0-rc1-final"
+        "Microsoft.AspNet.StaticFiles": "1.0.0-rc1-final",
+        "System.Runtime.InteropServices.RuntimeInformation": "4.0.0-beta-23516"
     },
 
     "commands": {
@@ -17,7 +18,7 @@
     "frameworks": {
         "dnxcore50": {
             "dependencies": {
-                "MapGuideDotNetCoreApi": "3.1.0"
+                "MapGuideDotNetApi": "3.1.0"
             }
         }
     },
