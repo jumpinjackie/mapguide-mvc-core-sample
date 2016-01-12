@@ -3,7 +3,7 @@
   "version": 2,
   "targets": {
     "DNXCore,Version=v5.0": {
-      "MapGuideDotNetCoreApi/3.1.0": {
+      "MapGuideDotNetApi/3.1.0": {
         "type": "package",
         "dependencies": {
           "Microsoft.CSharp": "4.0.1-beta-23409",
@@ -15,10 +15,10 @@
           "System.Threading": "4.0.11-beta-23409"
         },
         "compile": {
-          "lib/dnxcore50/MapGuideDotNetCoreApi.dll": {}
+          "lib/dnxcore50/MapGuideDotNetApi.dll": {}
         },
         "runtime": {
-          "lib/dnxcore50/MapGuideDotNetCoreApi.dll": {}
+          "lib/dnxcore50/MapGuideDotNetApi.dll": {}
         }
       },
       "Microsoft.AspNet.Antiforgery/1.0.0-rc1-final": {
@@ -2105,7 +2105,7 @@
       }
     },
     "DNXCore,Version=v5.0/win7-x86": {
-      "MapGuideDotNetCoreApi/3.1.0": {
+      "MapGuideDotNetApi/3.1.0": {
         "type": "package",
         "dependencies": {
           "Microsoft.CSharp": "4.0.1-beta-23409",
@@ -2117,16 +2117,16 @@
           "System.Threading": "4.0.11-beta-23409"
         },
         "compile": {
-          "lib/dnxcore50/MapGuideDotNetCoreApi.dll": {}
+          "lib/dnxcore50/MapGuideDotNetApi.dll": {}
         },
         "runtime": {
-          "lib/dnxcore50/MapGuideDotNetCoreApi.dll": {}
+          "lib/dnxcore50/MapGuideDotNetApi.dll": {}
         },
         "native": {
           "runtimes/win7-x86/native/ACE.dll": {},
           "runtimes/win7-x86/native/GEOS.dll": {},
           "runtimes/win7-x86/native/lib_json.dll": {},
-          "runtimes/win7-x86/native/MapGuideDotNetCoreUnmanagedApi.dll": {},
+          "runtimes/win7-x86/native/MapGuideDotNetUnmanagedApi.dll": {},
           "runtimes/win7-x86/native/MgFoundation.dll": {},
           "runtimes/win7-x86/native/MgGeometry.dll": {},
           "runtimes/win7-x86/native/MgHttpHandler.dll": {},
@@ -4646,7 +4646,7 @@
       }
     },
     "DNXCore,Version=v5.0/win7-x64": {
-      "MapGuideDotNetCoreApi/3.1.0": {
+      "MapGuideDotNetApi/3.1.0": {
         "type": "package",
         "dependencies": {
           "Microsoft.CSharp": "4.0.1-beta-23409",
@@ -4658,16 +4658,16 @@
           "System.Threading": "4.0.11-beta-23409"
         },
         "compile": {
-          "lib/dnxcore50/MapGuideDotNetCoreApi.dll": {}
+          "lib/dnxcore50/MapGuideDotNetApi.dll": {}
         },
         "runtime": {
-          "lib/dnxcore50/MapGuideDotNetCoreApi.dll": {}
+          "lib/dnxcore50/MapGuideDotNetApi.dll": {}
         },
         "native": {
           "runtimes/win7-x64/native/ACE.dll": {},
           "runtimes/win7-x64/native/GEOS.dll": {},
           "runtimes/win7-x64/native/lib_json.dll": {},
-          "runtimes/win7-x64/native/MapGuideDotNetCoreUnmanagedApi.dll": {},
+          "runtimes/win7-x64/native/MapGuideDotNetUnmanagedApi.dll": {},
           "runtimes/win7-x64/native/MgFoundation.dll": {},
           "runtimes/win7-x64/native/MgGeometry.dll": {},
           "runtimes/win7-x64/native/MgHttpHandler.dll": {},
@@ -7188,19 +7188,21 @@
     }
   },
   "libraries": {
-    "MapGuideDotNetCoreApi/3.1.0": {
+    "MapGuideDotNetApi/3.1.0": {
       "type": "package",
-      "sha512": "DNyFNJD5QNcUxSGaH4g+qsS2kO1OW2FD5MMBAVxHIn3tpSitIrRW9soc6WKHL2JPCKtFqhoTdjDVo0QXu5roXA==",
+      "sha512": "ZsqkWBlx8B3fxf0i22lcEhssFmpG3rQKU4va7cnOJgndzV/EFCWzM+hRwUsw6QysqYQkkfVTjw0gQ9twWHb1hA==",
       "files": [
-        "lib/dnxcore50/MapGuideDotNetCoreApi.dll",
-        "lib/dnxcore50/MapGuideDotNetCoreApi.xml",
-        "MapGuideDotNetCoreApi.3.1.0.nupkg",
-        "MapGuideDotNetCoreApi.3.1.0.nupkg.sha512",
-        "MapGuideDotNetCoreApi.nuspec",
+        "lib/dnx451/MapGuideDotNetApi.dll",
+        "lib/dnx451/MapGuideDotNetApi.xml",
+        "lib/dnxcore50/MapGuideDotNetApi.dll",
+        "lib/dnxcore50/MapGuideDotNetApi.xml",
+        "MapGuideDotNetApi.3.1.0.nupkg",
+        "MapGuideDotNetApi.3.1.0.nupkg.sha512",
+        "MapGuideDotNetApi.nuspec",
         "runtimes/win7-x64/native/ACE.dll",
         "runtimes/win7-x64/native/GEOS.dll",
         "runtimes/win7-x64/native/lib_json.dll",
-        "runtimes/win7-x64/native/MapGuideDotNetCoreUnmanagedApi.dll",
+        "runtimes/win7-x64/native/MapGuideDotNetUnmanagedApi.dll",
         "runtimes/win7-x64/native/MgFoundation.dll",
         "runtimes/win7-x64/native/MgGeometry.dll",
         "runtimes/win7-x64/native/MgHttpHandler.dll",
@@ -7215,7 +7217,7 @@
         "runtimes/win7-x86/native/ACE.dll",
         "runtimes/win7-x86/native/GEOS.dll",
         "runtimes/win7-x86/native/lib_json.dll",
-        "runtimes/win7-x86/native/MapGuideDotNetCoreUnmanagedApi.dll",
+        "runtimes/win7-x86/native/MapGuideDotNetUnmanagedApi.dll",
         "runtimes/win7-x86/native/MgFoundation.dll",
         "runtimes/win7-x86/native/MgGeometry.dll",
         "runtimes/win7-x86/native/MgHttpHandler.dll",
@@ -11412,7 +11414,7 @@
       "System.Runtime.InteropServices.RuntimeInformation >= 4.0.0-beta-23516"
     ],
     "DNXCore,Version=v5.0": [
-      "MapGuideDotNetCoreApi >= 3.1.0"
+      "MapGuideDotNetApi >= 3.1.0"
     ]
   }
 }

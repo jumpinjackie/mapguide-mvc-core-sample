@@ -19,7 +19,7 @@
     "frameworks": {
         "dnxcore50": {
             "dependencies": {
-                "MapGuideDotNetCoreApi": "3.1.0"
+                "MapGuideDotNetApi": "3.1.0"
             }
         }
     },
