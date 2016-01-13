@@ -159,7 +159,17 @@ function ViewerShim() {
         view.setResolution(this.ScaleToResolution(scale));
     };
     this.Refresh = function () {
-        console.log("Refresh");
+        var layers = this._map.getLayers();
+        layers.forEach(function (lyr) {
+            if (lyr instanceof ol.layer.Image) {
+                var source = lyr.getSource();
+                if (source instanceof ol.source.ImageMapGuide) {
+                    source.updateParams({
+                        seq: (new Date()).getTime()
+                    });
+                }
+            }
+        });
     };
     this.GetMapFrame = function () { return this; };
     this.DigitizePoint = function (handler) {
@@ -330,7 +340,8 @@ function Viewer(options) {
                     MAPNAME: rtMapInfo.RuntimeMap.Name,
                     FORMAT: 'PNG',
                     SESSION: rtMapInfo.RuntimeMap.SessionId,
-                    BEHAVIOR: 2
+                    BEHAVIOR: 1 | 2, //Selection and layers
+                    SELECTIONCOLOR: "0xFF000080" //Red
                 },
                 ratio: 2
             })

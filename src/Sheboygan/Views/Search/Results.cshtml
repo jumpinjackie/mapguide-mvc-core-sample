@@ -39,7 +39,7 @@
                     dataType: 'text', //Not xml, otherwise this is parsed as an XML document
                     data: { id: id, session: "@Model.Session", mapname: "@Model.MapName" }
                 }).done(function (res) {
-                    viewer.setSelectionXml(res);
+                    viewer.refresh();
                 })
                 .fail(function (res) {
                     alert("Failed to select feature");

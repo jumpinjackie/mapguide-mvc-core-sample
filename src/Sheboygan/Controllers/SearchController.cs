@@ -43,6 +43,7 @@ namespace Sheboygan.Controllers
                 selection.FromXml(""); //Clear existing
                 selection.AddFeatures(layer, reader, 0);
                 result = selection.ToXml();
+                selection.Save(resSvc);
             }
             finally
             {
