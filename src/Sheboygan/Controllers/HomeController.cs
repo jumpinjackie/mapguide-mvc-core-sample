@@ -22,8 +22,7 @@ namespace Sheboygan.Controllers
 
             model.Toolbar = new ToolbarItemModel[]
             {
-                new ActiveToolItemModel(ActiveTool.Zoom),
-                new ActiveToolItemModel(ActiveTool.Select)
+
             };
 
             return View(model);

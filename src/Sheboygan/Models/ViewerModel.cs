@@ -31,48 +31,7 @@ namespace Sheboygan.Models
 
         public abstract string Render();
     }
-
-    public enum ActiveTool
-    {
-        Zoom,
-        Select
-    }
-
-    public class ActiveToolItemModel : ToolbarItemModel
-    {
-        public ActiveToolItemModel(ActiveTool tool)
-        {
-            this.Tool = tool;
-            switch(tool)
-            {
-                case ActiveTool.Select:
-                    this.Tooltip = "Select Features"; //LOCALIZEME
-                    break;
-                case ActiveTool.Zoom:
-                    this.Tooltip = "Zoom"; //LOCALIZEME
-                    break;
-            }
-            this.CssClass = $"fa {GetToolClass()}";
-        }
-
-        string GetToolClass()
-        {
-            switch(this.Tool)
-            {
-                case ActiveTool.Select:
-                    return "fa-mouse-pointer";
-                case ActiveTool.Zoom:
-                    return "fa-search-plus";
-                default:
-                    return string.Empty;
-            }
-        }
-
-        ActiveTool Tool { get; set; }
-
-        public override string Render() => $"<a href='#' title='{Tooltip}' class='active-tool' data-tool='{Tool.ToString().ToLower()}'><span class='{CssClass}'></span></a>";
-    }
-
+    
     public class LinkMenuToolbarItemModel : ToolbarItemModel
     {
         public string Url { get; set; }
@@ -102,7 +61,7 @@ namespace Sheboygan.Models
 
         public override string Render() => $"<a href='{Url}' target='{Target}' title='{Tooltip}'><span class='{CssClass}' ></span>&nbsp;{Label}</a>";
     }
-
+    
     public class JsMenuItemModel : MenuItemModel
     {
         public string OnClick { get; set; }
