@@ -26,6 +26,14 @@
         #layerRoot ul.groupChildren { margin-top: 0; margin-bottom: 0; }
         #taskPaneFrame { width: 100%; height: 100%; border: none; }
         .spacer-below { border-bottom: 1px solid white; }
+        .task-home {
+            position: absolute;
+            top: 0;
+            right: 40px;
+            width: 40px;
+            cursor: pointer;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -51,7 +59,9 @@
             <div class="sidebar-pane" id="layers">
                 <h1 class="sidebar-header">
                     Layers
-                    <div class="sidebar-close"><i class="fa fa-caret-left"></i></div>
+                    <div class="sidebar-close" title="Collapse the sidebar">
+                        <i class="fa fa-angle-double-left"></i>
+                    </div>
                 </h1>
                 <div id="layerRoot">
 
@@ -60,14 +70,24 @@
             <div class="sidebar-pane" id="selection">
                 <h1 class="sidebar-header">
                     Selection
-                    <div class="sidebar-close"><i class="fa fa-caret-left"></i></div>
+                    <div class="sidebar-close" title="Collapse the sidebar">
+                        <i class="fa fa-angle-double-left"></i>
+                    </div>
                 </h1>
                 <div id="selectionRoot">
                     <p>You have not selected any features</p>
                 </div>
             </div>
             <div class="sidebar-pane" id="taskpane">
-                <h1 class="sidebar-header"><span class="taskpane-title">Task Pane</span><div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
+                <h1 class="sidebar-header">
+                    <span class="taskpane-title">Task Pane</span>
+                    <div class="task-home" title="Go to task pane home page">
+                        <i class="fa fa-home"></i>
+                    </div>
+                    <div class="sidebar-close" title="Collapse the sidebar">
+                        <i class="fa fa-angle-double-left"></i>
+                    </div>
+                </h1>
                 <div id="taskPaneRoot">
                     <iframe id="taskPaneFrame">
 
@@ -112,6 +132,10 @@
                 }
             });
             viewer.Init("@Model.MapDefinition", (REQ_LAYER_STRUCTURE | REQ_LAYER_FEATURE_SOURCE | REQ_LAYER_ICONS));
+
+            $(".task-home").click(function (e) {
+                viewer.TaskPane.home();
+            });
         });
     </script>
 </body>
