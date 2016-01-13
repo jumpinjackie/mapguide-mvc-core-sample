@@ -11,7 +11,14 @@ function getFusionInstance() {
 
 function getViewerInstance() {
     var viewerFrame = parent.parent;
-    return viewerFrame;
+    if (typeof (viewerFrame.ZoomToView) == 'function')
+        return viewerFrame;
+    else if (typeof (viewerFrame.viewer) != 'undefined') {
+        var shim = viewerFrame.viewer.Shim;
+        if (typeof (shim) != 'undefined' && typeof (shim.ZoomToView) == 'function')
+            return shim;
+    }
+    throw "Cannot find viewer instance!";
 }
 
 function isFusion() {
