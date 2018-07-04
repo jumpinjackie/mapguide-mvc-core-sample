@@ -1,0 +1,15 @@
+@model MvcCoreSample.Models.MapGuideCommandModel
+@{
+    Layout = "_TaskPaneContent";
+    ViewData["Title"] = "Analyzing Features";
+}
+<div class="list-group">
+    <a class="list-group-item" href="@Url.Action("CreateBuffer", Model)">
+        <h4 class="list-group-item-heading">Create Buffer</h4>
+        <p class="list-group-item-text">Create a buffer around a selected parcel.</p>
+    </a>
+    <a class="list-group-item" href="@Url.Action("FindFeaturesInBuffer", Model)">
+        <h4 class="list-group-item-heading">Find Features in Buffer</h4>
+        <p class="list-group-item-text">Create a buffer around a selected parcel, then mark parcels inside the buffer that are of type "MFG".</p>
+    </a>
+</div>

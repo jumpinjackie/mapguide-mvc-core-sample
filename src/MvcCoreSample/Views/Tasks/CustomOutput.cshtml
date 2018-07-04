@@ -1,0 +1,19 @@
+@model MvcCoreSample.Models.MapGuideCommandModel
+@{
+    Layout = "_TaskPaneContent";
+    ViewData["Title"] = "Custom Output";
+}
+<div class="list-group">
+    <a class="list-group-item" href="@Url.Action("PropertyReport", Model)">
+        <h4 class="list-group-item-heading">Property Report</h4>
+        <p class="list-group-item-text">Create a printable page with an inset image of the selected property. You must select one parcel on the map first before clicking this</p>
+    </a>
+    <a class="list-group-item" href="@Url.Action("EPlot", Model)">
+        <h4 class="list-group-item-heading">ePlot</h4>
+        <p class="list-group-item-text">Create and display an ePlot. Requires Autodesk DWF Viewer or Autodesk Design Review on the client system.</p>
+    </a>
+    <a class="list-group-item" href="@Url.Action("MultiPlot", Model)">
+        <h4 class="list-group-item-heading">Multi-plot</h4>
+        <p class="list-group-item-text">Create and display a multi-plot ePlot. Requires Autodesk DWF Viewer or Autodesk Design Review on the client system.</p>
+    </a>
+</div>

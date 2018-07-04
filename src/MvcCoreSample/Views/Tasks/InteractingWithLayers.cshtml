@@ -1,0 +1,15 @@
+@model MvcCoreSample.Models.MapGuideCommandModel
+@{
+    Layout = "_TaskPaneContent";
+    ViewData["Title"] = "Map Layers";
+}
+<div class="list-group">
+    <a class="list-group-item" href="@Url.Action("ShowLayerVisibility", Model)">
+        <h4 class="list-group-item-heading">Layer Visibility</h4>
+        <p class="list-group-item-text">List layers and visibility status</p>
+    </a>
+    <a class="list-group-item" href="@Url.Action("RenameRoadsLayer", Model)">
+        <h4 class="list-group-item-heading">Rename Roads Layer</h4>
+        <p class="list-group-item-text">Toggle the name of the Roads layer</p>
+    </a>
+</div>

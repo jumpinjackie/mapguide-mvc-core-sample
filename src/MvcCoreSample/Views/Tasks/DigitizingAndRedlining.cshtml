@@ -1,0 +1,15 @@
+@model MvcCoreSample.Models.MapGuideCommandModel
+@{
+    Layout = "_TaskPaneContent";
+    ViewData["Title"] = "Digitizing & Redlining";
+}
+<div class="list-group">
+    <a class="list-group-item" href="@Url.Action("Digitizing", Model)">
+        <h4 class="list-group-item-heading">Digitizing Sample</h4>
+        <p class="list-group-item-text">Show digitizing functions. </p>
+    </a>
+    <a class="list-group-item" href="@Url.Action("Redlining", Model)">
+        <h4 class="list-group-item-heading">Redlining Sample</h4>
+        <p class="list-group-item-text">Draw lines on the map.</p>
+    </a>
+</div>

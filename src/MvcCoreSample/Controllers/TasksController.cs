@@ -14,6 +14,18 @@ namespace MvcCoreSample.Controllers
 
         public IActionResult HelloViewer(MapGuideCommandModel model) => View(model);
 
+        public IActionResult InteractingWithLayers(MapGuideCommandModel model) => View(model);
+
+        public IActionResult WorkingWithFeatures(MapGuideCommandModel model) => View(model);
+
+        public IActionResult ModifyingMapsAndLayers(MapGuideCommandModel model) => View(model);
+
+        public IActionResult AnalyzingFeatures(MapGuideCommandModel model) => View(model);
+
+        public IActionResult DigitizingAndRedlining(MapGuideCommandModel model) => View(model);
+
+        public IActionResult CustomOutput(MapGuideCommandModel model) => View(model);
+
         public IActionResult DisplaySpatialReference(MapGuideCommandModel model)
         {
             var conn = this.CreateConnection(model);
