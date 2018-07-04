@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <WebLayout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:noNamespaceSchemaLocation="WebLayout-1.0.0.xsd">
-  <Title>PHP Developer's Guide Samples</Title>
+  <Title>ASP.net MVC Core Sample for MapGuide</Title>
   <Map>
     <ResourceId>$RESOURCE_ID</ResourceId>
     <HyperlinkTarget>TaskPane</HyperlinkTarget>
