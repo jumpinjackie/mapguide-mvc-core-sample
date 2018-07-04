@@ -1,0 +1,12 @@
+@model MvcCoreSample.Models.QueryFeaturesModel
+@{
+    Layout = "_TaskPaneContent";
+    ViewData["Title"] = "Feature Query";
+}
+<p>Properties owned by Schmitt</p>
+<div class="list-group">
+    @foreach(var result in Model.Addresses)
+    {
+    <div class="list-group-item">@result</div>
+    }
+</div>

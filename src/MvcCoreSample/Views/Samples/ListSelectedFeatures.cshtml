@@ -1,0 +1,14 @@
+@model MvcCoreSample.Models.SelectedFeaturesModel
+@{
+    Layout = "_TaskPaneContent";
+    ViewData["Title"] = "Selected Parcels";
+}
+<div class="list-group">
+@foreach(var res in Model.Results)
+{
+    <div class="list-group-item">
+        <h4 class="list-group-item-heading">@res.Name</h4>
+        <p class="list-group-item-text">@res.Address</p>
+    </div>
+}
+</div>
