@@ -1,0 +1,15 @@
+@model MvcCoreSample.Models.MapGuideCommandModel
+@{
+    Layout = "_TaskPaneContent";
+    ViewData["Title"] = "Basic Samples";
+}
+<ul class="list-group">
+    <li class="list-group-item">@Html.ActionLink("Hello Map", "HelloMap")</li>
+    <li class="list-group-item">@Html.ActionLink("Hello Viewer", "HelloViewer")</li>
+    <li class="list-group-item">@Html.ActionLink("Interacting With Layers", "InteractingWithLayers")</li>
+    <li class="list-group-item">@Html.ActionLink("Working With Feature Data", "WorkingWithFeatures")</li>
+    <li class="list-group-item">@Html.ActionLink("Modifying Maps and Layers", "ModifyingMapsAndLayers")</li>
+    <li class="list-group-item">@Html.ActionLink("Analyzing Features", "AnalyzingFeatures")</li>
+    <li class="list-group-item">@Html.ActionLink("Digitizing and Redlining", "DigitizingAndRedlining")</li>
+    <li class="list-group-item">@Html.ActionLink("Custom Output", "CustomOutput")</li>
+</ul>

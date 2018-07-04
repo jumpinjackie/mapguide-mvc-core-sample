@@ -1,3 +1,5 @@
 /.vs
+/nuget_packages
+/packages/*.nupkg
 bin
 obj
