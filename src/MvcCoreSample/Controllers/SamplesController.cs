@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using MvcCoreSample.Models;
 using OSGeo.MapGuide;
@@ -28,11 +29,44 @@ namespace MvcCoreSample.Controllers
 
         public IActionResult DisplaySpatialReference(MapGuideCommandModel model)
         {
-            var conn = this.CreateConnection(model);
-            var map = new MgMap(conn);
-            map.Open(model.MapName);
+            var (conn, map) = OpenMap(model);
             
             ViewData["SpatialReference"] = map.GetMapSRS();
+            return View(model);
+        }
+
+        public IActionResult ShowLayerVisibility(MapGuideCommandModel model)
+        {
+            var (conn, map) = OpenMap(model);
+
+            var layers = map.GetLayers();
+            var vm = new LayerVisibilityModel
+            {
+                Layers = layers.Select(layer => new LayerVisiblity { LayerName = layer.GetName(), GetVisibleResult = layer.GetVisible(), IsVisibleResult = layer.IsVisible() })
+            };
+            return View(vm);
+        }
+
+        public IActionResult RenameRoadsLayer(MapGuideCommandModel model)
+        {
+            var (conn, map) = OpenMap(model);
+
+            var layers = map.GetLayers();
+            
+            var roadLayer = layers.GetItem("Roads");
+            var roadLabel =roadLayer.GetLegendLabel();
+            string newLabel = null;
+            if (roadLabel == "Roads") 
+                newLabel = "Streets";
+            else
+                newLabel = "Roads";
+
+            roadLayer.SetLegendLabel(newLabel);
+            // You must save the updated map or the
+            // changes will not be applied
+            // Also be sure to refresh the map on page load.
+            map.Save();
+            ViewData["NewLabel"] = newLabel;
             return View(model);
         }
     }

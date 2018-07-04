@@ -14,6 +14,14 @@ namespace MvcCoreSample.Controllers
             return conn;
         }
 
+        protected (MgSiteConnection conn, MgMap map) OpenMap(MapGuideCommandModel input)
+        {
+            var conn = CreateConnection(input);
+            var map = new MgMap(conn);
+            map.Open(input.MapName);
+            return (conn, map);
+        }
+
         protected ActionResult ByteReaderResult(MgByteReader rdr, string downloadName = null)
         {
             if (string.IsNullOrEmpty(downloadName))
