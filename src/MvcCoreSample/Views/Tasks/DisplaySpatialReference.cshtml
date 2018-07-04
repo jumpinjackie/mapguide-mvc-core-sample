@@ -1,0 +1,7 @@
+@model MvcCoreSample.Models.MapGuideCommandModel
+@{
+    Layout = "_TaskPaneContent";
+    ViewData["Title"] = "Spatial Reference";
+}
+<p>The map <strong>@Model.MapName</strong> uses this reference system</p>
+<code>@ViewData["SpatialReference"]</code>

@@ -78,7 +78,7 @@
   </ToolBar>
   <InformationPane>
     <Visible>true</Visible>
-    <Width>200</Width>
+    <Width>250</Width>
     <LegendVisible>true</LegendVisible>
     <PropertiesVisible>true</PropertiesVisible>
   </InformationPane>
@@ -208,7 +208,7 @@
   </ContextMenu>
   <TaskPane>
     <Visible>true</Visible>
-    <Width>250</Width>
+    <Width>300</Width>
     <TaskBar>
       <Visible>true</Visible>
       <Home>

@@ -1,0 +1,18 @@
+@model MvcCoreSample.Models.MapGuideCommandModel
+@{
+    Layout = "_TaskPaneContent";
+    ViewData["Title"] = "Hello Viewer";
+}
+@section ScriptsHeader {
+<script type="text/javascript">
+    function GotoPoint() {
+        parent.parent.ZoomToView(-87.707416, 43.747860, 5000, true);
+        return false;
+    }
+</script>
+}
+<p>This sample shows different ways of calling MapGuide Viewer API functions</p>
+<ol>
+    <li>Click <a href="@Url.Action("GotoPoint", new { X = -87.724520, Y = 43.768387, Scale = 5000 })" target="scriptFrame">this link</a> to display a different location. This loads a page into the hidden script frame</li>
+    <li>Click <a href="#" onclick="GotoPoint()">this link</a> to display another location. This uses <strong>onclick</strong> to call JavaScript directly from the task pane</li>
+</ol>
