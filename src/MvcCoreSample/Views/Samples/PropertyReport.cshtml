@@ -1,0 +1,26 @@
+@model MvcCoreSample.Models.PropertyReportModel
+@{
+    Layout = "_TaskPaneContent";
+    ViewData["Title"] = "Property Report";
+}
+<h1>Property Report</h1>
+@if (Model.NoProperties)
+{
+<p>No parcel selected</p>
+}
+else
+{
+<p><img src="@(Model.Image.ImageUrl)" width="@(Model.Image.width)" height="@(Model.Image.height)" /></p>
+<p><strong>Owner</strong>: @Model.Owner</p>
+<p><strong>Address</strong>: @Model.Address</p>
+<p><strong>Billing Address</strong>: @Model.BillingAddress</p>
+<p><strong>Description:</strong>
+@foreach (var desc in Model.Description)
+{
+    if (!string.IsNullOrEmpty(desc))
+    {
+        @desc<br />
+    }
+}
+</p>
+}

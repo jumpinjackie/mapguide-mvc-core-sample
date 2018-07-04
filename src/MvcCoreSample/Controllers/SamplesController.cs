@@ -91,7 +91,7 @@ namespace MvcCoreSample.Controllers
             var parcelsLayer = layers.GetItem("Parcels");
             var districtsQuery = new MgFeatureQueryOptions();
             //ID is a string property in Districts layer
-            districtsQuery.SetFilter($"ID = '{parcelId}'");
+            districtsQuery.SetFilter("ID = '{parcelId}'");
 
             var featureReader = districtsLayer.SelectFeatures(districtsQuery);
             try
@@ -215,7 +215,7 @@ namespace MvcCoreSample.Controllers
             var (conn, map) = OpenMap(model);
             var resSvc = (MgResourceService)conn.CreateService(MgServiceType.ResourceService);
             var featSvc = (MgFeatureService)conn.CreateService(MgServiceType.FeatureService);
-            var fsId = new MgResourceIdentifier($"Session:{model.Session}//TemporaryLines.FeatureSource");
+            var fsId = new MgResourceIdentifier("Session:{model.Session}//TemporaryLines.FeatureSource");
 
             var className = "Lines";
             var layerName = "Lines";
@@ -334,7 +334,7 @@ namespace MvcCoreSample.Controllers
         {
             var (conn, map) = OpenMap(model);
             var resSvc = (MgResourceService)conn.CreateService(MgServiceType.ResourceService);
-            var fsId = new MgResourceIdentifier($"Session:{model.Session}//TemporaryLines.FeatureSource");
+            var fsId = new MgResourceIdentifier("Session:{model.Session}//TemporaryLines.FeatureSource");
             resSvc.DeleteResource(fsId);
             return View(model);
         }
@@ -342,5 +342,139 @@ namespace MvcCoreSample.Controllers
         public IActionResult Digitizing(MapGuideCommandModel model) => View(model);
 
         public IActionResult Redlining(MapGuideCommandModel model) => View(model);
+
+        public IActionResult PropertyImage(PropertyReportInputModel model)
+        {
+            var (conn, map) = OpenMap(model);
+            var wkt = map.GetMapSRS();
+            var renderSvc = (MgRenderingService)conn.CreateService(MgServiceType.RenderingService);
+            var csFactory = new MgCoordinateSystemFactory();
+            var srs = csFactory.Create(wkt);
+            MgSelection sel = null;
+            if (!string.IsNullOrEmpty(model.Selection))
+            {
+                sel = new MgSelection(map, model.Selection);
+            }
+            else
+            {
+                sel = new MgSelection(map);
+            }
+            var color = new MgColor(205, 189, 156);
+
+            var geometryFactory = new MgGeometryFactory();
+            var mapCenterCoordinate = geometryFactory.CreateCoordinateXY(model.CenterX, model.CenterY);
+
+            // Convert the height in pixels to map units.
+            // Create an envelope that contains the image area to display.
+
+            var displayInInches = model.Height / 96;
+            var displayInMeters = displayInInches * .0254;
+            var mapHeightInMeters = displayInMeters * model.Scale;
+            var mapHeightInMapUnits = srs.ConvertMetersToCoordinateSystemUnits(mapHeightInMeters);
+            var envelopeOffsetY = mapHeightInMapUnits / 2;
+            var envelopeOffsetX = model.Width / model.Height * envelopeOffsetY;
+            var envelope = new MgEnvelope(model.CenterX - envelopeOffsetX,
+              model.CenterY - envelopeOffsetY, model.CenterX + envelopeOffsetX,
+              model.CenterY + envelopeOffsetY);
+            // Render the image and send it to the browser.
+
+            var byteReader = renderSvc.RenderMap(map, sel, envelope, model.Width, model.Height, color, MgImageFormats.Png);
+            var st = new MgReadOnlyStream(byteReader);
+
+            return File(st, MgMimeType.Png);
+        }
+
+        public IActionResult PropertyReport(PropertyReportInputModel model)
+        {
+            var (conn, map) = OpenMap(model);
+            var sel = new MgSelection(map, model.Selection);
+            var layers = sel.GetLayers();
+            var parcelsLayer = layers?.FirstOrDefault(layer => layer.GetName() == "Parcels");
+            var vm = new PropertyReportModel
+            {
+                Session = model.Session,
+                MapName = model.MapName,
+                NoProperties = true
+            };
+            if (parcelsLayer != null)
+            {
+                var fr = sel.GetSelectedFeatures(parcelsLayer, parcelsLayer.GetFeatureClassName(), false);
+                if (fr.ReadNext())
+                {
+                    vm.NoProperties = false;
+                    var agf = fr.GetGeometry("SHPGEOM");
+                    var agfRw = new MgAgfReaderWriter();
+                    var geom = agfRw.Read(agf);
+                    var centroid = geom.GetCentroid();
+                    var cCoord = centroid.GetCoordinate();
+                    var x = cCoord.X;
+                    var y = cCoord.Y;
+
+                    vm.Owner = fr.GetString("RNAME");
+                    vm.Address = fr.GetString("RPROPAD");
+                    vm.BillingAddress = fr.GetString("RBILAD");
+                    vm.Description = new[]
+                    {
+                        fr.GetString("RLDESCR1"),
+                        fr.GetString("RLDESCR2"),
+                        fr.GetString("RLDESCR3")
+                    };
+                    vm.Image = (Url.Action(nameof(PropertyImage), model), model.Width, model.Height);
+                }
+            }
+            return View(vm);
+        }
+
+        public IActionResult EPlot(MapGuideCommandModel model)
+        {
+            var (conn, map) = OpenMap(model);
+            var mappingSvc = (MgMappingService)conn.CreateService(MgServiceType.MappingService);
+            var dwfVersion = new MgDwfVersion("6.01", "1.2");
+
+            var plotSpec = new MgPlotSpecification(8.5f, 11.0f, MgPageUnitsType.Inches);
+            plotSpec.SetMargins(0.5f, 0.5f, 0.5f, 0.5f);
+
+            var layoutRes = new MgResourceIdentifier("Library://Samples/Sheboygan/Layouts/SheboyganMap.PrintLayout");
+            var layout = new MgLayout(layoutRes, "City of Sheboygan", MgPageUnitsType.Inches);
+
+            var byteReader = mappingSvc.GeneratePlot(map, plotSpec, layout, dwfVersion);
+            var st = new MgReadOnlyStream(byteReader);
+
+            return File(st, MgMimeType.Dwf);
+        }
+
+        public IActionResult MultiPlot(MapGuideCommandModel model)
+        {
+            var (conn, map) = OpenMap(model);
+            var mappingSvc = (MgMappingService)conn.CreateService(MgServiceType.MappingService);
+            var dwfVersion = new MgDwfVersion("6.01", "1.2");
+
+            var plotSpec = new MgPlotSpecification(8.5f, 11.0f, MgPageUnitsType.Inches);
+            plotSpec.SetMargins(0.5f, 0.5f, 0.5f, 0.5f);
+
+            var layoutRes = new MgResourceIdentifier("Library://Samples/Sheboygan/Layouts/SheboyganMap.PrintLayout");
+            var layout = new MgLayout(layoutRes, "City of Sheboygan", MgPageUnitsType.Inches);
+
+            var plotCollection = new MgMapPlotCollection();
+
+            var plot1 = new MgMapPlot(map, plotSpec, layout);
+            plot1.SetCenterAndScale(map.GetViewCenter().GetCoordinate(), map.GetViewScale() * 2);
+            plotCollection.Add(plot1);
+
+            // Create a second map for the second sheet in the DWF. This second sheet uses the print layout
+            // to display a page title and legend.
+
+            var map2 = new MgMap(conn);
+            map2.Create(map.GetMapDefinition(), "Sheet 2");
+            var plot2 = new MgMapPlot(map2, plotSpec, layout);
+            plot2.SetCenterAndScale(map.GetViewCenter().GetCoordinate(), map.GetViewScale());
+            // plot2 = new MgMapPlot(map2, map.GetViewCenter().GetCoordinate(), map.GetViewScale(), plotSpec, layout);
+            plotCollection.Add(plot2);
+
+            var byteReader = mappingSvc.GenerateMultiPlot(plotCollection, dwfVersion);
+            var st = new MgReadOnlyStream(byteReader);
+
+            return File(st, MgMimeType.Dwf);
+        }
     }
 }
