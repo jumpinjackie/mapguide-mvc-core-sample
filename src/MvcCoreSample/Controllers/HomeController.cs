@@ -57,7 +57,7 @@ namespace MvcCoreSample.Controllers
             var path = Path.Combine(_hostEnv.ContentRootPath, "Data/WebLayout.xml");
             var content = new StringBuilder(System.IO.File.ReadAllText(path))
                 .Replace("$RESOURCE_ID", mdfId.ToString())
-                .Replace("$HOME_URL", Url.Action(nameof(TasksController.Home), "Tasks", null, Url.ActionContext.HttpContext.Request.Scheme));
+                .Replace("$HOME_URL", Url.Action(nameof(SamplesController.Home), "Samples", null, Url.ActionContext.HttpContext.Request.Scheme));
 
             var bytes = Encoding.UTF8.GetBytes(content.ToString());
             var bs = new MgByteSource(bytes, bytes.Length);

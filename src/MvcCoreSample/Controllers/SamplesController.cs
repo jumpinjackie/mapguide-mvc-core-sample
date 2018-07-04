@@ -4,7 +4,7 @@ using OSGeo.MapGuide;
 
 namespace MvcCoreSample.Controllers
 {
-    public class TasksController : MgBaseController
+    public class SamplesController : MgBaseController
     {
         public IActionResult Home(MapGuideCommandModel model) => View(model);
 
