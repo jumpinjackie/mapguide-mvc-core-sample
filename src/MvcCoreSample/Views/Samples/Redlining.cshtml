@@ -1,0 +1,33 @@
+@model MvcCoreSample.Models.MapGuideCommandModel
+@{
+    Layout = "_TaskPaneContent";
+    ViewData["Title"] = "Redlining";
+}
+@section ScriptsHeader {
+<script type="text/javascript">
+    function DigitizeLine() {
+        parent.parent.mapFrame.DigitizeLine(OnLineDigitized);
+    }
+    function OnLineDigitized(line) {
+        var params = [
+            "x0", line.Point(0).X,
+            "y0", line.Point(0).Y,
+            "x1", line.Point(1).X,
+            "y1", line.Point(1).Y,
+            "SESSION", "@(Model.Session)",
+            "MAPNAME", "@(Model.MapName)"
+        ];
+        parent.parent.formFrame.Submit("@Url.Action("DrawLine")", params, "scriptFrame");
+    }
+</script>
+}
+<p>Click the button below to draw a line on the map. Pan to the desired place on the map and click again to complete.</p>
+<p>If using the AJAX viewer, you will need to drag this line instead of clicking the start/end points</p>
+<button type="button" class="btn btn-primary btn-block" onclick="DigitizeLine()">Line</button>
+<!-- "Clear Lines" button -->
+<hr />
+<form target="scriptFrame" action="@Url.Action("ClearLines")" method="post">
+    <input type="submit" class="btn btn-primary btn-block" value="Clear Lines" />
+    <input type="hidden" name="SESSION" value="@(Model.Session)" />
+    <input type="hidden" name="MAPNAME" value="@(Model.MapName)" />
+</form>

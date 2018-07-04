@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using MvcCoreSample.Extensions;
 using MvcCoreSample.Models;
 using OSGeo.MapGuide;
 
@@ -69,7 +70,7 @@ namespace MvcCoreSample.Controllers
             //This should already exist if refreshing, otherwise ...
             if (!resSvc.ResourceExists(resId))
             {
-                var path = Path.Combine(_hostEnv.ContentRootPath, "Data/WebLayout.xml");
+                var path = _hostEnv.ResolveDataPath("WebLayout.xml");
                 var content = new StringBuilder(System.IO.File.ReadAllText(path))
                     .Replace("$RESOURCE_ID", mdfId.ToString())
                     .Replace("$HOME_URL", Url.Action(nameof(SamplesController.Home), "Samples", null, Url.ActionContext.HttpContext.Request.Scheme));
