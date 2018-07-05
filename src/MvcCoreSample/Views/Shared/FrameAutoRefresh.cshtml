@@ -1,0 +1,17 @@
+@model MvcCoreSample.Models.MapGuideCommandModel
+@{
+    Layout = "_TaskPaneContent";
+}
+<script type="text/javascript">
+    parent.mapFrame.Refresh();
+@if (ViewData["ZoomToScale"] != null)
+{<text>
+    parent.mapFrame.ZoomToScale(@(ViewData["ZoomToScale"]));
+</text>
+}
+@if (ViewData["FrameStartupMessage"] != null)
+{<text>
+    alert('@(ViewData["FrameStartupMessage"])');
+</text>
+}
+</script>

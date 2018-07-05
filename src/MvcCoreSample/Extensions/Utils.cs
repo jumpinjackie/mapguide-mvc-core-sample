@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -9,10 +10,48 @@ namespace MvcCoreSample.Extensions
 {
     public static class Utils
     {
+        public static void HandleUpdateFeaturesResults(MgPropertyCollection props)
+        {
+            var errors = new List<string>();
+            foreach (var prop in props)
+            {
+                if (prop.GetPropertyType() == MgPropertyType.String)
+                {
+                    errors.Add(((MgStringProperty)prop).GetValue());
+                }
+                else if (prop.GetPropertyType() == MgPropertyType.Feature)
+                {
+                    var fr = ((MgFeatureProperty)prop).GetValue();
+                    fr.Close();
+                }
+            }
+            if (errors.Count > 0)
+            {
+                throw new Exception("One or more errors occurred updating features:\n\n - " + string.Join("\n - ", errors));
+            }
+        }
+
         public static string ResolveDataPath(this IHostingEnvironment hostEnv, string name)
         {
             var path = Path.Combine(hostEnv.ContentRootPath, "Data/", name);
             return path;
+        }
+
+        public static MgPropertyCollection MakePoint(string name, double x, double y)
+        {
+            var propertyCollection = new MgPropertyCollection();
+            var nameProperty = new MgStringProperty("NAME", name);
+            propertyCollection.Add(nameProperty);
+
+            var wktReaderWriter = new MgWktReaderWriter();
+            var agfReaderWriter = new MgAgfReaderWriter();
+
+            var geometry = wktReaderWriter.Read("POINT XY (" + x + " " + y + ")");
+            var geometryByteReader = agfReaderWriter.Write(geometry);
+            var geometryProperty = new MgGeometryProperty("GEOM", geometryByteReader);
+            propertyCollection.Add(geometryProperty);
+
+            return propertyCollection;
         }
 
         public static MgPropertyCollection MakeLine(string name, double x0, double y0, double x1, double y1)
