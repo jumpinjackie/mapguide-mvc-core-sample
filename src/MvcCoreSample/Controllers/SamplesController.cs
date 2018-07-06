@@ -91,7 +91,7 @@ namespace MvcCoreSample.Controllers
             var parcelsLayer = layers.GetItem("Parcels");
             var districtsQuery = new MgFeatureQueryOptions();
             //ID is a string property in Districts layer
-            districtsQuery.SetFilter("ID = '{parcelId}'");
+            districtsQuery.SetFilter($"ID = '{parcelId}'");
 
             var featureReader = districtsLayer.SelectFeatures(districtsQuery);
             try
@@ -155,7 +155,7 @@ namespace MvcCoreSample.Controllers
             var layers = map.GetLayers();
             var parcelsLayer = layers.GetItem("Parcels");
             var fr = SelectParcelsInDistrict(map);
-            string xml = string.Empty;
+            var xml = string.Empty;
             if (fr != null)
             {
                 var sel = new MgSelection(map);
@@ -275,30 +275,30 @@ namespace MvcCoreSample.Controllers
                 // Create a new layer which uses that feature source
 
                 // Create a line rule to stylize the lines
-                String ruleLegendLabel = "Lines Rule";
-                String filter = "";
-                String color = "FF0000FF";
-                LayerDefinitionFactory factory = new LayerDefinitionFactory(_hostEnv);
-                String lineRule = factory.CreateLineRule(ruleLegendLabel, filter, color);
+                var ruleLegendLabel = "Lines Rule";
+                var filter = "";
+                var color = "FF0000FF";
+                var factory = new LayerDefinitionFactory(_hostEnv);
+                var lineRule = factory.CreateLineRule(ruleLegendLabel, filter, color);
 
                 // Create a line type style
-                String lineTypeStyle = factory.CreateLineTypeStyle(lineRule);
+                var lineTypeStyle = factory.CreateLineTypeStyle(lineRule);
 
                 // Create a scale range
-                String minScale = "0";
-                String maxScale = "1000000000000";
-                String lineScaleRange = factory.CreateScaleRange(minScale, maxScale, lineTypeStyle);
+                var minScale = "0";
+                var maxScale = "1000000000000";
+                var lineScaleRange = factory.CreateScaleRange(minScale, maxScale, lineTypeStyle);
 
                 // Create the layer definiton
-                String featureName = "SHP_Schema:Lines";
-                String geometry = "SHPGEOM";
-                String layerDefinition = factory.CreateLayerDefinition(fsId.ToString(), featureName, geometry, lineScaleRange);
+                var featureName = "SHP_Schema:Lines";
+                var geometry = "SHPGEOM";
+                var layerDefinition = factory.CreateLayerDefinition(fsId.ToString(), featureName, geometry, lineScaleRange);
 
                 //---------------------------------------------------//
                 // Add the layer to the map
-                XmlDocument doc = new XmlDocument();
+                var doc = new XmlDocument();
                 doc.LoadXml(layerDefinition);
-                MgLayer newLayer = Utils.AddLayerDefinitionToMap(doc, layerName, layerLegendLabel, model.Session, resSvc, map);
+                var newLayer = Utils.AddLayerDefinitionToMap(doc, layerName, layerLegendLabel, model.Session, resSvc, map);
                 // Add the layer to a layer group
                 Utils.AddLayerToGroup(newLayer, groupName, groupLegendLabel, map);
             }
@@ -307,17 +307,17 @@ namespace MvcCoreSample.Controllers
             // Turn on the visibility of this layer.
             // (If the layer does not already exist in the map, it will be visible by default when it is added.
             // But if the user has already run this script, he or she may have set the layer to be invisible.)
-            MgLayerCollection layerCollection = map.GetLayers();
+            var layerCollection = map.GetLayers();
             if (layerCollection.Contains(layerName))
             {
-                MgLayer linesLayer = (MgLayer)layerCollection.GetItem(layerName);
+                var linesLayer = (MgLayer)layerCollection.GetItem(layerName);
                 linesLayer.SetVisible(true);
             }
 
-            MgLayerGroupCollection groupCollection = map.GetLayerGroups();
+            var groupCollection = map.GetLayerGroups();
             if (groupCollection.Contains(groupName))
             {
-                MgLayerGroup analysisGroup = groupCollection.GetItem(groupName);
+                var analysisGroup = groupCollection.GetItem(groupName);
                 analysisGroup.SetVisible(true);
             }
 
@@ -486,10 +486,9 @@ namespace MvcCoreSample.Controllers
             // --------------------------------------------------//
             // Load a layer from XML, and use the DOM to change it
 
-            // Load the prototype layer definition into
-            // a PHP DOM object.
-            XmlDocument domDocument = new XmlDocument();
-            String layerDefPath = _hostEnv.ResolveDataPath("RecentlyBuilt.LayerDefinition");
+            // Load the prototype layer definition into a XmlDocument
+            var domDocument = new XmlDocument();
+            var layerDefPath = _hostEnv.ResolveDataPath("RecentlyBuilt.LayerDefinition");
             if (!System.IO.File.Exists(layerDefPath))
             {
                 return View("UserError", "The layer definition 'RecentlyBuilt.LayerDefinition' could not be found");
@@ -498,7 +497,7 @@ namespace MvcCoreSample.Controllers
 
             // Get a list of all the <AreaRule><Filter> elements in
             // the XML.
-            XmlNodeList nodes = domDocument.SelectNodes("//AreaRule/Filter");
+            var nodes = domDocument.SelectNodes("//AreaRule/Filter");
             // Find the correct node and change it
             foreach (XmlNode node in nodes)
             {
@@ -524,16 +523,16 @@ namespace MvcCoreSample.Controllers
             // ...
 
             // Add the layer to the map
-            MgLayer newLayer = Utils.AddLayerDefinitionToMap(domDocument, "RecentlyBuilt", "Built after 1980", model.Session, resourceService, map);
+            var newLayer = Utils.AddLayerDefinitionToMap(domDocument, "RecentlyBuilt", "Built after 1980", model.Session, resourceService, map);
             Utils.AddLayerToGroup(newLayer, "Analysis", "Analysis", map);
 
             // --------------------------------------------------//
             // Turn off the "Square Footage" themed layer (if it
             // exists) so it does not hide this layer.
-            MgLayerCollection layerCollection = map.GetLayers();
+            var layerCollection = map.GetLayers();
             if (layerCollection.Contains("SquareFootage"))
             {
-                MgLayerBase squareFootageLayer = layerCollection.GetItem("SquareFootage");
+                var squareFootageLayer = layerCollection.GetItem("SquareFootage");
                 squareFootageLayer.SetVisible(false);
             }
 
@@ -544,7 +543,7 @@ namespace MvcCoreSample.Controllers
             layerCollection = map.GetLayers();
             if (layerCollection.Contains("RecentlyBuilt"))
             {
-                MgLayerBase recentlyBuiltLayer = layerCollection.GetItem("RecentlyBuilt");
+                var recentlyBuiltLayer = layerCollection.GetItem("RecentlyBuilt");
                 recentlyBuiltLayer.SetVisible(true);
             }
 
@@ -565,47 +564,47 @@ namespace MvcCoreSample.Controllers
             // ...
             //---------------------------------------------------//
             // Create a new layer
-            LayerDefinitionFactory factory = new LayerDefinitionFactory(_hostEnv);
+            var factory = new LayerDefinitionFactory(_hostEnv);
 
             /// Create three area rules for three different
             // scale ranges.
-            String areaRule1 = factory.CreateAreaRule("1 to 800",
+            var areaRule1 = factory.CreateAreaRule("1 to 800",
               "SQFT &gt;= 1 AND SQFT &lt; 800", "FFFFFF00");
-            String areaRule2 = factory.CreateAreaRule("800 to 1600",
+            var areaRule2 = factory.CreateAreaRule("800 to 1600",
               "SQFT &gt;= 800 AND SQFT &lt; 1600", "FFFFBF20");
-            String areaRule3 = factory.CreateAreaRule("1600 to 2400",
+            var areaRule3 = factory.CreateAreaRule("1600 to 2400",
               "SQFT &gt;= 1600 AND SQFT &lt; 2400", "FFFF8040");
 
             // Create an area type style.
-            String areaTypeStyle = factory.CreateAreaTypeStyle(areaRule1 + areaRule2 + areaRule3);
+            var areaTypeStyle = factory.CreateAreaTypeStyle(areaRule1 + areaRule2 + areaRule3);
 
             // Create a scale range.
-            String minScale = "0";
-            String maxScale = "10000";
-            String areaScaleRange = factory.CreateScaleRange(minScale, maxScale, areaTypeStyle);
+            var minScale = "0";
+            var maxScale = "10000";
+            var areaScaleRange = factory.CreateScaleRange(minScale, maxScale, areaTypeStyle);
 
             // Create the layer definiton.
-            String featureClass = "Library://Samples/Sheboygan/Data/Parcels.FeatureSource";
-            String featureName = "SHP_Schema:Parcels";
-            String geometry = "SHPGEOM";
-            String layerDefinition = factory.CreateLayerDefinition(featureClass, featureName, geometry, areaScaleRange);
+            var featureClass = "Library://Samples/Sheboygan/Data/Parcels.FeatureSource";
+            var featureName = "SHP_Schema:Parcels";
+            var geometry = "SHPGEOM";
+            var layerDefinition = factory.CreateLayerDefinition(featureClass, featureName, geometry, areaScaleRange);
 
-            XmlDocument doc = new XmlDocument();
+            var doc = new XmlDocument();
             doc.LoadXml(layerDefinition);
 
             //---------------------------------------------------//
             // ...
 
             // Add the layer to the map
-            MgLayer newLayer = Utils.AddLayerDefinitionToMap(doc, "SquareFootage", "Square Footage", model.Session, resourceService, map);
+            var newLayer = Utils.AddLayerDefinitionToMap(doc, "SquareFootage", "Square Footage", model.Session, resourceService, map);
             Utils.AddLayerToGroup(newLayer, "Analysis", "Analysis", map);
 
             //---------------------------------------------------//
             // Turn off the "Recently Built" themed layer (if it exists) so it does not hide this layer.
-            MgLayerCollection layerCollection = map.GetLayers();
+            var layerCollection = map.GetLayers();
             if (layerCollection.Contains("RecentlyBuilt"))
             {
-                MgLayerBase recentlyBuiltLayer = layerCollection.GetItem("RecentlyBuilt");
+                var recentlyBuiltLayer = layerCollection.GetItem("RecentlyBuilt");
                 recentlyBuiltLayer.SetVisible(false);
             }
 
@@ -616,7 +615,7 @@ namespace MvcCoreSample.Controllers
             layerCollection = map.GetLayers();
             if (layerCollection.Contains("SquareFootage"))
             {
-                MgLayerBase squareFootageLayer = layerCollection.GetItem("SquareFootage");
+                var squareFootageLayer = layerCollection.GetItem("SquareFootage");
                 squareFootageLayer.SetVisible(true);
             }
 
@@ -638,45 +637,45 @@ namespace MvcCoreSample.Controllers
             //---------------------------------------------------//
             // Create a new layer
 
-            LayerDefinitionFactory factory = new LayerDefinitionFactory(_hostEnv);
+            var factory = new LayerDefinitionFactory(_hostEnv);
 
             // Create a line rule.
-            String legendLabel = "";
-            String filter = "";
-            String color = "FF0000FF";
-            String lineRule = factory.CreateLineRule(legendLabel, filter, color);
+            var legendLabel = "";
+            var filter = "";
+            var color = "FF0000FF";
+            var lineRule = factory.CreateLineRule(legendLabel, filter, color);
 
             // Create a line type style.
-            String lineTypeStyle = factory.CreateLineTypeStyle(lineRule);
+            var lineTypeStyle = factory.CreateLineTypeStyle(lineRule);
 
             // Create a scale range.
-            String minScale = "0";
-            String maxScale = "1000000000000";
-            String lineScaleRange = factory.CreateScaleRange(minScale, maxScale, lineTypeStyle);
+            var minScale = "0";
+            var maxScale = "1000000000000";
+            var lineScaleRange = factory.CreateScaleRange(minScale, maxScale, lineTypeStyle);
 
             // Create the layer definiton.
-            String featureClass = "Library://Samples/Sheboygan/Data/HydrographicLines.FeatureSource";
-            String featureName = "SHP_Schema:HydrographicLines";
-            String geometry = "SHPGEOM";
-            String layerDefinition = factory.CreateLayerDefinition(featureClass, featureName, geometry, lineScaleRange);
+            var featureClass = "Library://Samples/Sheboygan/Data/HydrographicLines.FeatureSource";
+            var featureName = "SHP_Schema:HydrographicLines";
+            var geometry = "SHPGEOM";
+            var layerDefinition = factory.CreateLayerDefinition(featureClass, featureName, geometry, lineScaleRange);
 
             //---------------------------------------------------//
             // ...
 
-            XmlDocument doc = new XmlDocument();
+            var doc = new XmlDocument();
             doc.LoadXml(layerDefinition);
             // Add the layer to the map
-            MgLayer newLayer = Utils.AddLayerDefinitionToMap(doc, "Hydro", "Hydro", model.Session, resourceService, map);
+            var newLayer = Utils.AddLayerDefinitionToMap(doc, "Hydro", "Hydro", model.Session, resourceService, map);
             Utils.AddLayerToGroup(newLayer, "Analysis", "Analysis", map);
 
             // --------------------------------------------------//
             // Turn on the visibility of this layer.
             // (If the layer does not already exist in the map, it will be visible by default when it is added.
             // But if the user has already run this script, he or she may have set the layer to be invisible.)
-            MgLayerCollection layerCollection = map.GetLayers();
+            var layerCollection = map.GetLayers();
             if (layerCollection.Contains("Hydro"))
             {
-                MgLayerBase squareFootageLayer = layerCollection.GetItem("Hydro");
+                var squareFootageLayer = layerCollection.GetItem("Hydro");
                 squareFootageLayer.SetVisible(true);
             }
 
@@ -701,16 +700,16 @@ namespace MvcCoreSample.Controllers
             // so we"ll create it.)
 
             // Create a feature class definition for the new feature source
-            MgClassDefinition classDefinition = new MgClassDefinition();
+            var classDefinition = new MgClassDefinition();
             classDefinition.SetName("Points");
             classDefinition.SetDescription("Feature class with point data.");
             classDefinition.SetDefaultGeometryPropertyName("GEOM");
 
-            MgPropertyDefinitionCollection idProps = classDefinition.GetIdentityProperties();
-            MgPropertyDefinitionCollection clsProps = classDefinition.GetProperties();
+            var idProps = classDefinition.GetIdentityProperties();
+            var clsProps = classDefinition.GetProperties();
 
             // Create an identify property
-            MgDataPropertyDefinition identityProperty = new MgDataPropertyDefinition("KEY");
+            var identityProperty = new MgDataPropertyDefinition("KEY");
             identityProperty.SetDataType(MgPropertyType.Int32);
             identityProperty.SetAutoGeneration(true);
             identityProperty.SetReadOnly(true);
@@ -719,37 +718,37 @@ namespace MvcCoreSample.Controllers
             idProps.Add(identityProperty);
 
             // Create a name property
-            MgDataPropertyDefinition nameProperty = new MgDataPropertyDefinition("NAME");
+            var nameProperty = new MgDataPropertyDefinition("NAME");
             nameProperty.SetDataType(MgPropertyType.String);
             // Add the name property to the class definition
             clsProps.Add(nameProperty);
 
             // Create a geometry property
-            MgGeometricPropertyDefinition geometryProperty = new MgGeometricPropertyDefinition("GEOM");
+            var geometryProperty = new MgGeometricPropertyDefinition("GEOM");
             geometryProperty.SetGeometryTypes(MgFeatureGeometricType.Point);
             // Add the geometry property to the class definition
             clsProps.Add(geometryProperty);
 
             // Create a feature schema
-            MgFeatureSchema featureSchema = new MgFeatureSchema("PointSchema", "Point schema");
-            MgClassDefinitionCollection classes = featureSchema.GetClasses();
+            var featureSchema = new MgFeatureSchema("PointSchema", "Point schema");
+            var classes = featureSchema.GetClasses();
             // Add the feature schema to the class definition
             classes.Add(classDefinition);
 
             // Create the feature source
-            String featureSourceName = $"Session:{model.Session}//PointsOfInterest.FeatureSource";
-            MgResourceIdentifier resourceIdentifier = new MgResourceIdentifier(featureSourceName);
+            var featureSourceName = $"Session:{model.Session}//PointsOfInterest.FeatureSource";
+            var resourceIdentifier = new MgResourceIdentifier(featureSourceName);
             //wkt = "LOCALCS[\"*XY-MT*\",LOCAL_DATUM[\"*X-Y*\",10000],UNIT[\"Meter\", 1],AXIS[\"X\",EAST],AXIS[\"Y\",NORTH]]";
-            String wkt = "GEOGCS[\"LL84\",DATUM[\"WGS84\",SPHEROID[\"WGS84\",6378137.000,298.25722293]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.01745329251994]]";
-            MgFileFeatureSourceParams sdfParams = new MgFileFeatureSourceParams("OSGeo.SDF", "LatLong", wkt, featureSchema);
+            var wkt = "GEOGCS[\"LL84\",DATUM[\"WGS84\",SPHEROID[\"WGS84\",6378137.000,298.25722293]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.01745329251994]]";
+            var sdfParams = new MgFileFeatureSourceParams("OSGeo.SDF", "LatLong", wkt, featureSchema);
             featureService.CreateFeatureSource(resourceIdentifier, sdfParams);
 
             // We need to add some data to the sdf before using it.  The spatial context
             // reader must have an extent.
-            MgBatchPropertyCollection batchPropertyCollection = new MgBatchPropertyCollection();
-            MgWktReaderWriter wktReaderWriter = new MgWktReaderWriter();
-            MgAgfReaderWriter agfReaderWriter = new MgAgfReaderWriter();
-            MgGeometryFactory geometryFactory = new MgGeometryFactory();
+            var batchPropertyCollection = new MgBatchPropertyCollection();
+            var wktReaderWriter = new MgWktReaderWriter();
+            var agfReaderWriter = new MgAgfReaderWriter();
+            var geometryFactory = new MgGeometryFactory();
 
             // Make four points
             batchPropertyCollection.Add(Utils.MakePoint("Point A", -87.727, 43.748));
@@ -758,67 +757,68 @@ namespace MvcCoreSample.Controllers
             batchPropertyCollection.Add(Utils.MakePoint("Point D", -87.728, 43.750));
 
             // Add the batch property collection to the feature source
-            MgInsertFeatures cmd = new MgInsertFeatures("Points", batchPropertyCollection);
-            MgFeatureCommandCollection featureCommandCollection = new MgFeatureCommandCollection();
+            var cmd = new MgInsertFeatures("Points", batchPropertyCollection);
+            var featureCommandCollection = new MgFeatureCommandCollection();
             featureCommandCollection.Add(cmd);
 
             // Execute the "add" commands
-            featureService.UpdateFeatures(resourceIdentifier, featureCommandCollection, false);
+            var ur = featureService.UpdateFeatures(resourceIdentifier, featureCommandCollection, false);
+            Utils.HandleUpdateFeaturesResults(ur);
 
             // ...
             //---------------------------------------------------//
             // Create a new layer
 
-            LayerDefinitionFactory factory = new LayerDefinitionFactory(_hostEnv);
+            var factory = new LayerDefinitionFactory(_hostEnv);
 
             // Create a mark symbol
-            String resourceId = "Library://Samples/Sheboygan/Symbols/BasicSymbols.SymbolLibrary";
-            String symbolName = "PushPin";
-            String width = "24";  // unit = points
-            String height = "24"; // unit = points
-            String color = "FFFF0000";
-            String markSymbol = factory.CreateMarkSymbol(resourceId, symbolName, width, height, color);
+            var resourceId = "Library://Samples/Sheboygan/Symbols/BasicSymbols.SymbolLibrary";
+            var symbolName = "PushPin";
+            var width = "24";  // unit = points
+            var height = "24"; // unit = points
+            var color = "FFFF0000";
+            var markSymbol = factory.CreateMarkSymbol(resourceId, symbolName, width, height, color);
 
             // Create a text symbol
-            String text = "ID";
-            String fontHeight = "12";
-            String foregroundColor = "FF000000";
-            String textSymbol = factory.CreateTextSymbol(text, fontHeight, foregroundColor);
+            var text = "ID";
+            var fontHeight = "12";
+            var foregroundColor = "FF000000";
+            var textSymbol = factory.CreateTextSymbol(text, fontHeight, foregroundColor);
 
             // Create a point rule.
-            String legendLabel = "trees";
-            String filter = "";
-            String pointRule = factory.CreatePointRule(legendLabel, filter, textSymbol, markSymbol);
+            var legendLabel = "trees";
+            var filter = "";
+            var pointRule = factory.CreatePointRule(legendLabel, filter, textSymbol, markSymbol);
 
             // Create a point type style.
-            String pointTypeStyle = factory.CreatePointTypeStyle(pointRule);
+            var pointTypeStyle = factory.CreatePointTypeStyle(pointRule);
 
             // Create a scale range.
-            String minScale = "0";
-            String maxScale = "1000000000000";
-            String pointScaleRange = factory.CreateScaleRange(minScale, maxScale, pointTypeStyle);
+            var minScale = "0";
+            var maxScale = "1000000000000";
+            var pointScaleRange = factory.CreateScaleRange(minScale, maxScale, pointTypeStyle);
 
             // Create the layer definiton.
-            String featureName = "PointSchema:Points";
-            String geometry = "GEOM";
-            String layerDefinition = factory.CreateLayerDefinition(featureSourceName, featureName, geometry, pointScaleRange);
+            var featureName = "PointSchema:Points";
+            var geometry = "GEOM";
+            var layerDefinition = factory.CreateLayerDefinition(featureSourceName, featureName, geometry, pointScaleRange);
             //---------------------------------------------------//
             // ...
 
-            XmlDocument doc = new XmlDocument();
+            var doc = new XmlDocument();
             doc.LoadXml(layerDefinition);
             // Add the layer to the map
-            MgLayer newLayer = Utils.AddLayerDefinitionToMap(doc, "Points", "Points of Interest", model.Session, resourceService, map);
+            var newLayer = Utils.AddLayerDefinitionToMap(doc, "Points", "Points of Interest", model.Session, resourceService, map);
             Utils.AddLayerToGroup(newLayer, "Analysis", "Analysis", map);
 
             // --------------------------------------------------//
             // Turn on the visibility of this layer.
             // (If the layer does not already exist in the map, it will be visible by default when it is added.
             // But if the user has already run this script, he or she may have set the layer to be invisible.)
-            MgLayerCollection layerCollection = map.GetLayers();
+            var layerCollection = map.GetLayers();
             if (layerCollection.Contains("Points"))
             {
-                MgLayerBase pointsLayer = layerCollection.GetItem("Points");
+                var pointsLayer = layerCollection.GetItem("Points");
                 pointsLayer.SetVisible(true);
             }
 
@@ -855,14 +855,14 @@ namespace MvcCoreSample.Controllers
 
                 // Set up some objects for coordinate conversion
 
-                String mapWktSrs = map.GetMapSRS();
-                MgAgfReaderWriter agfReaderWriter = new MgAgfReaderWriter();
-                MgWktReaderWriter wktReaderWriter = new MgWktReaderWriter();
-                MgCoordinateSystemFactory coordinateSystemFactory = new MgCoordinateSystemFactory();
-                MgCoordinateSystem srs = coordinateSystemFactory.Create(mapWktSrs);
-                MgMeasure srsMeasure = srs.GetMeasure();
+                var mapWktSrs = map.GetMapSRS();
+                var agfReaderWriter = new MgAgfReaderWriter();
+                var wktReaderWriter = new MgWktReaderWriter();
+                var coordinateSystemFactory = new MgCoordinateSystemFactory();
+                var srs = coordinateSystemFactory.Create(mapWktSrs);
+                var srsMeasure = srs.GetMeasure();
 
-                BufferHelper helper = new BufferHelper(_hostEnv);
+                var helper = new BufferHelper(_hostEnv);
 
                 // Check for a buffer layer. If it exists, delete
                 // the current features.
@@ -876,7 +876,7 @@ namespace MvcCoreSample.Controllers
                 {
                     // The layer does not exist and must be created.
 
-                    MgResourceIdentifier bufferFeatureResId = new MgResourceIdentifier($"Session:{model.Session}//Buffer.FeatureSource");
+                    var bufferFeatureResId = new MgResourceIdentifier($"Session:{model.Session}//Buffer.FeatureSource");
                     helper.CreateBufferFeatureSource(featureService, mapWktSrs, bufferFeatureResId);
                     bufferLayer = helper.CreateBufferLayer(resourceService, bufferFeatureResId, model.Session);
                     mapLayers.Insert(0, bufferLayer);
@@ -884,7 +884,7 @@ namespace MvcCoreSample.Controllers
                 else
                 {
                     bufferLayer = (MgLayer)mapLayers.GetItem(layerIndex);
-                    MgFeatureCommandCollection commands = new MgFeatureCommandCollection();
+                    var commands = new MgFeatureCommandCollection();
                     commands.Add(new MgDeleteFeatures("BufferClass", "ID like '%'"));
 
                     var result = bufferLayer.UpdateFeatures(commands);
@@ -895,28 +895,28 @@ namespace MvcCoreSample.Controllers
                 {
                     // Only check selected features in the Parcels layer.
 
-                    MgLayer layer = (MgLayer)selectedLayers.GetItem(i);
+                    var layer = (MgLayer)selectedLayers.GetItem(i);
 
                     if (layer.GetName() == "Parcels")
                     {
                         // Get the selected features from the MgSelection object
-                        MgFeatureReader featureReader = selection.GetSelectedFeatures(layer, layer.GetFeatureClassName(), false);
+                        var featureReader = selection.GetSelectedFeatures(layer, layer.GetFeatureClassName(), false);
 
                         // Process each item in the MgFeatureReader. Get the
                         // geometries from all the selected features and
                         // merge them into a single geometry.
 
-                        MgGeometryCollection inputGeometries = new MgGeometryCollection();
+                        var inputGeometries = new MgGeometryCollection();
                         while (featureReader.ReadNext())
                         {
-                            MgByteReader featureGeometryData = featureReader.GetGeometry("SHPGEOM");
-                            MgGeometry featureGeometry = agfReaderWriter.Read(featureGeometryData);
+                            var featureGeometryData = featureReader.GetGeometry("SHPGEOM");
+                            var featureGeometry = agfReaderWriter.Read(featureGeometryData);
 
                             inputGeometries.Add(featureGeometry);
                         }
 
-                        MgGeometryFactory geometryFactory = new MgGeometryFactory();
-                        MgGeometry mergedGeometries = geometryFactory.CreateMultiGeometry(inputGeometries);
+                        var geometryFactory = new MgGeometryFactory();
+                        var mergedGeometries = geometryFactory.CreateMultiGeometry(inputGeometries);
 
                         // Add buffer features to the temporary feature source.
                         // Create multiple concentric buffers to show area.
@@ -926,13 +926,13 @@ namespace MvcCoreSample.Controllers
                         // The stylization is set in the layer template file, which
                         // is used in function CreateBufferLayer().
 
-                        MgFeatureCommandCollection commands = new MgFeatureCommandCollection();
+                        var commands = new MgFeatureCommandCollection();
                         for (int bufferRing = 0; bufferRing < bufferRingCount; bufferRing++)
                         {
-                            double bufferDist = srs.ConvertMetersToCoordinateSystemUnits(bufferRingSize * (bufferRing + 1));
-                            MgGeometry bufferGeometry = mergedGeometries.Buffer(bufferDist, srsMeasure);
+                            var bufferDist = srs.ConvertMetersToCoordinateSystemUnits(bufferRingSize * (bufferRing + 1));
+                            var bufferGeometry = mergedGeometries.Buffer(bufferDist, srsMeasure);
 
-                            MgPropertyCollection properties = new MgPropertyCollection();
+                            var properties = new MgPropertyCollection();
                             properties.Add(new MgGeometryProperty(bufferLayer.FeatureGeometryName, agfReaderWriter.Write(bufferGeometry)));
 
                             commands.Add(new MgInsertFeatures(bufferLayer.FeatureClassName, properties));
@@ -959,7 +959,6 @@ namespace MvcCoreSample.Controllers
             var (conn, map) = OpenMap(model);
             var resourceService = (MgResourceService)conn.CreateService(MgServiceType.ResourceService);
             var featureService = (MgFeatureService)conn.CreateService(MgServiceType.FeatureService);
-            MgFeatureQueryOptions queryOptions = new MgFeatureQueryOptions();
 
             // Check for selection data passed via HTTP POST
 
@@ -977,12 +976,12 @@ namespace MvcCoreSample.Controllers
 
                 // Set up some objects for coordinate conversion
 
-                String mapWktSrs = map.GetMapSRS();
-                MgAgfReaderWriter agfReaderWriter = new MgAgfReaderWriter();
-                MgWktReaderWriter wktReaderWriter = new MgWktReaderWriter();
-                MgCoordinateSystemFactory coordinateSystemFactory = new MgCoordinateSystemFactory();
-                MgCoordinateSystem srs = coordinateSystemFactory.Create(mapWktSrs);
-                MgMeasure srsMeasure = srs.GetMeasure();
+                var mapWktSrs = map.GetMapSRS();
+                var agfReaderWriter = new MgAgfReaderWriter();
+                var wktReaderWriter = new MgWktReaderWriter();
+                var coordinateSystemFactory = new MgCoordinateSystemFactory();
+                var srs = coordinateSystemFactory.Create(mapWktSrs);
+                var srsMeasure = srs.GetMeasure();
 
                 // Check for a buffer layer. If it exists, delete
                 // the current features.
@@ -990,14 +989,14 @@ namespace MvcCoreSample.Controllers
                 // a layer to hold the buffer.
 
                 var mapLayers = map.GetLayers();
-                BufferHelper helper = new BufferHelper(_hostEnv);
+                var helper = new BufferHelper(_hostEnv);
                 MgLayer bufferLayer = null;
                 int layerIndex = mapLayers.IndexOf("Buffer");
                 if (layerIndex < 0)
                 {
                     // The layer does not exist and must be created.
 
-                    MgResourceIdentifier bufferFeatureResId = new MgResourceIdentifier($"Session:{model.Session}//Buffer.FeatureSource");
+                    var bufferFeatureResId = new MgResourceIdentifier($"Session:{model.Session}//Buffer.FeatureSource");
                     helper.CreateBufferFeatureSource(featureService, mapWktSrs, bufferFeatureResId);
                     bufferLayer = helper.CreateBufferLayer(resourceService, bufferFeatureResId, model.Session);
                     mapLayers.Insert(0, bufferLayer);
@@ -1005,7 +1004,7 @@ namespace MvcCoreSample.Controllers
                 else
                 {
                     bufferLayer = (MgLayer)mapLayers.GetItem(layerIndex);
-                    MgFeatureCommandCollection commands = new MgFeatureCommandCollection();
+                    var commands = new MgFeatureCommandCollection();
                     commands.Add(new MgDeleteFeatures(bufferLayer.FeatureClassName, "ID like '%'"));
 
                     var result = bufferLayer.UpdateFeatures(commands);
@@ -1021,7 +1020,7 @@ namespace MvcCoreSample.Controllers
                 layerIndex = mapLayers.IndexOf("ParcelMarker");
                 if (layerIndex < 0)
                 {
-                    MgResourceIdentifier parcelFeatureResId = new MgResourceIdentifier($"Session:{model.Session}//Buffer.FeatureSource");
+                    var parcelFeatureResId = new MgResourceIdentifier($"Session:{model.Session}//Buffer.FeatureSource");
                     helper.CreateParcelMarkerFeatureSource(featureService, mapWktSrs, parcelFeatureResId);
                     parcelMarkerLayer = helper.CreateParcelMarkerLayer(resourceService, parcelFeatureResId, model.Session);
                     mapLayers.Insert(0, parcelMarkerLayer);
@@ -1029,7 +1028,7 @@ namespace MvcCoreSample.Controllers
                 else
                 {
                     parcelMarkerLayer = (MgLayer)mapLayers.GetItem(layerIndex);
-                    MgFeatureCommandCollection commands = new MgFeatureCommandCollection();
+                    var commands = new MgFeatureCommandCollection();
                     commands.Add(new MgDeleteFeatures("ParcelMarkerClass", "ID like '%'"));
 
                     var result = parcelMarkerLayer.UpdateFeatures(commands);
@@ -1042,42 +1041,42 @@ namespace MvcCoreSample.Controllers
                 {
                     // Only check selected features in the Parcels layer.
 
-                    MgLayer layer = (MgLayer)selectedLayers.GetItem(i);
+                    var layer = (MgLayer)selectedLayers.GetItem(i);
 
                     if (layer.GetName() == "Parcels")
                     {
 
                         //Response.Write("Marking all parcels inside the buffer that are of type 'MFG'");
 
-                        MgFeatureReader featureReader = selection.GetSelectedFeatures(layer, layer.GetFeatureClassName(), false);
+                        var featureReader = selection.GetSelectedFeatures(layer, layer.GetFeatureClassName(), false);
 
 
                         // Process each item in the MgFeatureReader. Get the
                         // geometries from all the selected features and
                         // merge them into a single geometry.
 
-                        MgGeometryCollection inputGeometries = new MgGeometryCollection();
+                        var inputGeometries = new MgGeometryCollection();
                         while (featureReader.ReadNext())
                         {
-                            MgByteReader featureGeometryData = featureReader.GetGeometry("SHPGEOM");
-                            MgGeometry featureGeometry = agfReaderWriter.Read(featureGeometryData);
+                            var featureGeometryData = featureReader.GetGeometry("SHPGEOM");
+                            var featureGeometry = agfReaderWriter.Read(featureGeometryData);
 
                             inputGeometries.Add(featureGeometry);
                         }
 
-                        MgGeometryFactory geometryFactory = new MgGeometryFactory();
-                        MgGeometry mergedGeometries = geometryFactory.CreateMultiGeometry(inputGeometries);
+                        var geometryFactory = new MgGeometryFactory();
+                        var mergedGeometries = geometryFactory.CreateMultiGeometry(inputGeometries);
 
                         // Create a buffer from the merged geometries
 
-                        double bufferDist = srs.ConvertMetersToCoordinateSystemUnits(bufferRingSize);
-                        MgGeometry bufferGeometry = mergedGeometries.Buffer(bufferDist, srsMeasure);
+                        var bufferDist = srs.ConvertMetersToCoordinateSystemUnits(bufferRingSize);
+                        var bufferGeometry = mergedGeometries.Buffer(bufferDist, srsMeasure);
 
                         // Create a filter to select parcels within the buffer. Combine
                         // a basic filter and a spatial filter to select all parcels
                         // within the buffer that are of type "MFG".
 
-                        queryOptions = new MgFeatureQueryOptions();
+                        var queryOptions = new MgFeatureQueryOptions();
                         queryOptions.SetFilter("RTYPE = 'MFG'");
                         queryOptions.SetSpatialFilter("SHPGEOM", bufferGeometry, MgFeatureSpatialOperations.Inside);
 
@@ -1090,15 +1089,15 @@ namespace MvcCoreSample.Controllers
                         // Collect all the points into an MgFeatureCommandCollection,
                         // so they can all be added in one operation.
 
-                        MgFeatureCommandCollection parcelMarkerCommands = new MgFeatureCommandCollection();
+                        var parcelMarkerCommands = new MgFeatureCommandCollection();
                         while (featureReader.ReadNext())
                         {
-                            MgByteReader byteReader = featureReader.GetGeometry("SHPGEOM");
-                            MgGeometry geometry = agfReaderWriter.Read(byteReader);
-                            MgPoint point = geometry.GetCentroid();
+                            var byteReader = featureReader.GetGeometry("SHPGEOM");
+                            var geometry = agfReaderWriter.Read(byteReader);
+                            var point = geometry.GetCentroid();
 
                             // Create an insert command for this parcel.
-                            MgPropertyCollection properties = new MgPropertyCollection();
+                            var properties = new MgPropertyCollection();
                             properties.Add(new MgGeometryProperty("ParcelLocation", agfReaderWriter.Write(point)));
                             parcelMarkerCommands.Add(new MgInsertFeatures("ParcelMarkerClass", properties));
                         }
@@ -1116,9 +1115,9 @@ namespace MvcCoreSample.Controllers
 
                         // Create a feature in the buffer feature source to show the area covered by the buffer.
 
-                        MgPropertyCollection props = new MgPropertyCollection();
+                        var props = new MgPropertyCollection();
                         props.Add(new MgGeometryProperty(bufferLayer.FeatureGeometryName, agfReaderWriter.Write(bufferGeometry)));
-                        MgFeatureCommandCollection commands = new MgFeatureCommandCollection();
+                        var commands = new MgFeatureCommandCollection();
                         commands.Add(new MgInsertFeatures(bufferLayer.FeatureClassName, props));
 
                         var result = bufferLayer.UpdateFeatures(commands);
