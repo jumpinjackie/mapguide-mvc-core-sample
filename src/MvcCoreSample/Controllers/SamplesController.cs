@@ -215,7 +215,7 @@ namespace MvcCoreSample.Controllers
             var (conn, map) = OpenMap(model);
             var resSvc = (MgResourceService)conn.CreateService(MgServiceType.ResourceService);
             var featSvc = (MgFeatureService)conn.CreateService(MgServiceType.FeatureService);
-            var fsId = new MgResourceIdentifier("Session:{model.Session}//TemporaryLines.FeatureSource");
+            var fsId = new MgResourceIdentifier($"Session:{model.Session}//TemporaryLines.FeatureSource");
 
             var className = "Lines";
             var layerName = "Lines";
