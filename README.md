@@ -45,8 +45,8 @@ All the required dependencies (except for MapGuide itself) are included. All you
 
 To run the self-contained sample, download the appropriate package, extract it to a directory of your choosing, then from the command-line, go to that directory and run:
 
-Windows: `MvcCoreSample.exe`
-Linux: `./MvcCoreSample`
+ * Windows: `MvcCoreSample.exe`
+ * Linux: `./MvcCoreSample`
 
 NOTE: You may need to manually `chmod +x` the `MvcCoreSample` executable on Linux after extracting the package.
 
