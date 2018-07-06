@@ -1020,7 +1020,7 @@ namespace MvcCoreSample.Controllers
                 layerIndex = mapLayers.IndexOf("ParcelMarker");
                 if (layerIndex < 0)
                 {
-                    var parcelFeatureResId = new MgResourceIdentifier($"Session:{model.Session}//Buffer.FeatureSource");
+                    var parcelFeatureResId = new MgResourceIdentifier($"Session:{model.Session}//ParcelMarker.FeatureSource");
                     helper.CreateParcelMarkerFeatureSource(featureService, mapWktSrs, parcelFeatureResId);
                     parcelMarkerLayer = helper.CreateParcelMarkerLayer(resourceService, parcelFeatureResId, model.Session);
                     mapLayers.Insert(0, parcelMarkerLayer);
