@@ -38,8 +38,8 @@ You have MapGuide installed, but don't want to bother with the motions of gettin
 
 Thanks to the publishing features of .net Core, a pre-built self-contained version of this example is available for you to download:
 
- * Windows (64-bit): TBD
- * Ubuntu 14.04 64-bit: TBD
+ * Windows (64-bit): [Download](https://github.com/jumpinjackie/mapguide-mvc-core-sample/releases/download/v0.1/MapGuide_MvcCoreSample_Windows_x64.zip)
+ * Ubuntu 14.04 64-bit: [Download](https://github.com/jumpinjackie/mapguide-mvc-core-sample/releases/download/v0.1/MapGuide_MvcCoreSample_Ubuntu14_x64.zip)
 
 All the required dependencies (except for MapGuide itself) are included. All you need is an existing MapGuide Open Source 3.1.1 installation with the Sheboygan dataset loaded.
 
@@ -49,3 +49,5 @@ Windows: `MvcCoreSample.exe`
 Linux: `./MvcCoreSample`
 
 NOTE: You may need to manually `chmod +x` the `MvcCoreSample` executable on Linux after extracting the package.
+
+Once running, open a web browser and navigate to `http://localhost:5000`
