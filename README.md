@@ -31,3 +31,21 @@ This sample code serves multiple purposes:
     * `dotnet restore`
     * `dotnet build`
     * `dotnet run`
+
+# Installing and trying out the self-contained sample
+
+You have MapGuide installed, but don't want to bother with the motions of getting all the required build tools to build and run this sample? No problem.
+
+Thanks to the publishing features of .net Core, a pre-built self-contained version of this example is available for you to download:
+
+ * Windows (64-bit): TBD
+ * Ubuntu 14.04 64-bit: TBD
+
+All the required dependencies (except for MapGuide itself) are included. All you need is an existing MapGuide Open Source 3.1.1 installation with the Sheboygan dataset loaded.
+
+To run the self-contained sample, download the appropriate package, extract it to a directory of your choosing, then from the command-line, go to that directory and run:
+
+Windows: `MvcCoreSample.exe`
+Linux: `./MvcCoreSample`
+
+NOTE: You may need to manually `chmod +x` the `MvcCoreSample` executable on Linux after extracting the package.
