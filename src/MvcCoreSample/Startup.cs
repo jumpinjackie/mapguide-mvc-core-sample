@@ -69,6 +69,11 @@ namespace MvcCoreSample
             options.AddRedirect("Home/dist/stdassets/(.*)", "lib/viewer/stdassets/$1");
             app.UseRewriter(options);
 
+            //NOTE: https disabled for localhost. If you wish to enable, uncomment the following lines below
+            //
+            // 1. app.UseHsts()
+            // 2. app.UseHttpsRedirection()
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -76,10 +81,10 @@ namespace MvcCoreSample
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
+                //app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
