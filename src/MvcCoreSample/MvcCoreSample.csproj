@@ -8,5 +8,9 @@
     <PackageReference Include="MapGuideDotNetApi" Version="3.1.1.9378-pre74" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include="Data\**\*" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
 
 </Project>
