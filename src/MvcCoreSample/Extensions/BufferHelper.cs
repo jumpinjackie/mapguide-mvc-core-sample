@@ -45,7 +45,7 @@ namespace MvcCoreSample.Extensions
             MgFeatureSchema bufferSchema = new MgFeatureSchema("BufferLayerSchema", "temporary schema to hold a buffer");
             bufferSchema.GetClasses().Add(bufferClass);
 
-            MgFileFeatureSourceParams sdfParams = new MgFileFeatureSourceParams("OSGeo.SQLite", "defaultSrs", wkt, bufferSchema);
+            MgFileFeatureSourceParams sdfParams = new MgFileFeatureSourceParams("OSGeo.SDF", "defaultSrs", wkt, bufferSchema);
 
             featureService.CreateFeatureSource(bufferFeatureResId, sdfParams);
         }
@@ -128,7 +128,7 @@ namespace MvcCoreSample.Extensions
             MgFeatureSchema parcelSchema = new MgFeatureSchema("ParcelLayerSchema", "temporary schema to hold parcel markers");
             parcelSchema.GetClasses().Add(parcelClass);
 
-            MgFileFeatureSourceParams sdfParams = new MgFileFeatureSourceParams("OSGeo.SQLite", "defaultSrs", wkt, parcelSchema);
+            MgFileFeatureSourceParams sdfParams = new MgFileFeatureSourceParams("OSGeo.SDF", "defaultSrs", wkt, parcelSchema);
 
             featureService.CreateFeatureSource(parcelMarkerDataResId, sdfParams);
         }

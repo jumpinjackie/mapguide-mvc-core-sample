@@ -1056,12 +1056,19 @@ namespace MvcCoreSample.Controllers
                         // merge them into a single geometry.
 
                         var inputGeometries = new MgGeometryCollection();
-                        while (featureReader.ReadNext())
+                        try 
                         {
-                            var featureGeometryData = featureReader.GetGeometry("SHPGEOM");
-                            var featureGeometry = agfReaderWriter.Read(featureGeometryData);
+                            while (featureReader.ReadNext())
+                            {
+                                var featureGeometryData = featureReader.GetGeometry("SHPGEOM");
+                                var featureGeometry = agfReaderWriter.Read(featureGeometryData);
 
-                            inputGeometries.Add(featureGeometry);
+                                inputGeometries.Add(featureGeometry);
+                            }
+                        }
+                        finally 
+                        {
+                            featureReader.Close();
                         }
 
                         var geometryFactory = new MgGeometryFactory();
@@ -1080,37 +1087,43 @@ namespace MvcCoreSample.Controllers
                         queryOptions.SetFilter("RTYPE = 'MFG'");
                         queryOptions.SetSpatialFilter("SHPGEOM", bufferGeometry, MgFeatureSpatialOperations.Inside);
 
-                        featureReader = layer.SelectFeatures(queryOptions);
-
-                        // Get the features from the feature source,
-                        // determine the centroid of each selected feature, and
-                        // add a point to the ParcelMarker layer to mark the
-                        // centroid.
-                        // Collect all the points into an MgFeatureCommandCollection,
-                        // so they can all be added in one operation.
-
-                        var parcelMarkerCommands = new MgFeatureCommandCollection();
-                        while (featureReader.ReadNext())
+                        try
                         {
-                            var byteReader = featureReader.GetGeometry("SHPGEOM");
-                            var geometry = agfReaderWriter.Read(byteReader);
-                            var point = geometry.GetCentroid();
+                            featureReader = layer.SelectFeatures(queryOptions);
 
-                            // Create an insert command for this parcel.
-                            var properties = new MgPropertyCollection();
-                            properties.Add(new MgGeometryProperty("ParcelLocation", agfReaderWriter.Write(point)));
-                            parcelMarkerCommands.Add(new MgInsertFeatures("ParcelMarkerClass", properties));
+                            // Get the features from the feature source,
+                            // determine the centroid of each selected feature, and
+                            // add a point to the ParcelMarker layer to mark the
+                            // centroid.
+                            // Collect all the points into an MgFeatureCommandCollection,
+                            // so they can all be added in one operation.
+
+                            var parcelMarkerCommands = new MgFeatureCommandCollection();
+                            while (featureReader.ReadNext())
+                            {
+                                var byteReader = featureReader.GetGeometry("SHPGEOM");
+                                var geometry = agfReaderWriter.Read(byteReader);
+                                var point = geometry.GetCentroid();
+
+                                // Create an insert command for this parcel.
+                                var properties = new MgPropertyCollection();
+                                properties.Add(new MgGeometryProperty("ParcelLocation", agfReaderWriter.Write(point)));
+                                parcelMarkerCommands.Add(new MgInsertFeatures("ParcelMarkerClass", properties));
+                            }
+                        
+                            if (parcelMarkerCommands.GetCount() > 0)
+                            {
+                                var pr = parcelMarkerLayer.UpdateFeatures(parcelMarkerCommands);
+                                Utils.HandleUpdateFeaturesResults(pr);
+                            }
+                            else
+                            {
+                                ViewData["FrameStartupMessage"] = "No parcels within the buffer area match.";
+                            }
                         }
-                        featureReader.Close();
-
-                        if (parcelMarkerCommands.GetCount() > 0)
+                        finally
                         {
-                            var pr = parcelMarkerLayer.UpdateFeatures(parcelMarkerCommands);
-                            Utils.HandleUpdateFeaturesResults(pr);
-                        }
-                        else
-                        {
-                            ViewData["FrameStartupMessage"] = "No parcels within the buffer area match.";
+                            featureReader.Close();
                         }
 
                         // Create a feature in the buffer feature source to show the area covered by the buffer.
