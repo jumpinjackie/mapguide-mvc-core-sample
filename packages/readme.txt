@@ -1,0 +1,1 @@
+Download the latest NuGet package from: https://github.com/jumpinjackie/mapguide-api-bindings/releases

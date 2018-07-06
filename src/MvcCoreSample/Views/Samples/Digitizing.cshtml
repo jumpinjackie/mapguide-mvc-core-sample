@@ -1,0 +1,81 @@
+@model MvcCoreSample.Models.MapGuideCommandModel
+@{
+    Layout = "_TaskPaneContent";
+    ViewData["Title"] = "Digitizing";
+}
+@section ScriptsHeader {
+<script type="text/javascript">
+    function DigitizePoint() {
+        // ShowResults("");
+        parent.parent.mapFrame.DigitizePoint(OnPointDigitized);
+    }
+    function OnPointDigitized(point) {
+        ShowResults("X: " + point.X + ", Y: " + point.Y);
+    }
+    function DigitizeLine() {
+        ShowResults("");
+        parent.parent.mapFrame.DigitizeLine(OnLineDigitized);
+    }
+    function OnLineDigitized(line) {
+        ShowResults(FormatLineResults(line));
+    }
+    function DigitizeMultiLine() {
+        ShowResults("");
+        parent.parent.mapFrame.DigitizeMultiLine(OnMultiLineDigitized);
+    }     
+    function DigitizeLineString() {
+        ShowResults("");
+        parent.parent.mapFrame.DigitizeLineString(OnDigitizeLineString);
+    }
+    function OnDigitizeLineString(line) {
+        ShowResults(FormatLineResults(line));
+    }
+        
+    function DigitizeCircle() {
+        ShowResults("");
+        parent.parent.mapFrame.DigitizeCircle(OnCircleDigitized);
+    }
+    function OnCircleDigitized(circle) {
+        ShowResults("Center X: " + circle.Center.X + ", Y: " + circle.Center.Y + "\nRadius: " + circle.Radius);
+    }
+    function DigitizeRectangle() {
+        ShowResults("");
+        parent.parent.mapFrame.DigitizeRectangle(OnRectangleDigitized);
+    }
+    function OnRectangleDigitized(rect) {
+        str = "X1: " + rect.Point1.X + ", Y1: " + rect.Point1.Y + "\n";
+        str += "X2: " + rect.Point2.X + ", Y1: " + rect.Point2.Y + "\n";
+        
+        ShowResults(str);
+    }
+    function DigitizePolygon() {
+        ShowResults("");
+        parent.parent.mapFrame.DigitizePolygon(OnPolygonDigitized);
+    }
+    function OnPolygonDigitized(poly) {
+        ShowResults(FormatLineResults(poly));
+    }
+    function FormatLineResults(line) {
+        str = "Points: " + line.Count + "\n";
+        for(var i = 0; i < line.Count; i++) {
+            pt = line.Point(i);
+            str += "X" + i + ": " + pt.X + ", Y" + i + ": " + pt.Y + "\n";
+        }
+        return str;
+    }
+    function ShowResults(res)  {
+        document.getElementById("res").value = res;
+    }
+</script>
+}
+<p>Click any button below then click on the map</p>
+<button type="button" class="btn btn-primary btn-block" onclick="DigitizePoint()">Point</button>
+<button type="button" class="btn btn-primary btn-block" onclick="DigitizeLineString()">LineString</button>
+<button type="button" class="btn btn-primary btn-block" onclick="DigitizePolygon()">Polygon</button>
+<p>Click any button below then drag on the map (if using AJAX viewer). Otherwise pan to the desired place and click again on map to complete.</p>
+<button type="button" class="btn btn-primary btn-block" onclick="DigitizeLine()">Line</button>
+<button type="button" class="btn btn-primary btn-block" onclick="DigitizeRectangle()">Rectangle</button>
+<button type="button" class="btn btn-primary btn-block" onclick="DigitizeCircle()">Circle</button>
+<p>Result:</p>
+<textarea id="res" rows="10" cols="32" name="results" class="form-control">
+</textarea>

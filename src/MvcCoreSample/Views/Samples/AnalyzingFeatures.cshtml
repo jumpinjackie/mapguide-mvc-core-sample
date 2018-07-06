@@ -1,0 +1,42 @@
+@model MvcCoreSample.Models.MapGuideCommandModel
+@{
+    Layout = "_TaskPaneContent";
+    ViewData["Title"] = "Analyzing Features";
+}
+@section ScriptsHeader {
+<script type="text/javascript">
+    function submitBufferRequest(pageUrl)
+    {
+        var xmlSel = parent.parent.mapFrame.GetSelectionXML();
+        if (xmlSel.length > 0)
+        {
+            var params = [
+                "SESSION", parent.parent.mapFrame.GetSessionId(),
+                "MAPNAME", parent.parent.mapFrame.GetMapName(),
+                "SELECTION", xmlSel
+            ];
+            parent.parent.formFrame.Submit(pageUrl, params, "scriptFrame");
+        }
+        else 
+        {
+            alert ("Please select a parcel");
+        }
+    }
+</script>
+}
+@section Scripts {
+<script type="text/javascript">
+    parent.parent.mapFrame.Refresh();
+    parent.parent.mapFrame.ZoomToScale(9999);
+</script>
+}
+<div class="list-group">
+    <a class="list-group-item" href="#" onclick="submitBufferRequest('@Url.Action("CreateBuffer", Model)'); return false;">
+        <h4 class="list-group-item-heading">Create Buffer</h4>
+        <p class="list-group-item-text">Create a buffer around a selected parcel.</p>
+    </a>
+    <a class="list-group-item" href="#" onclick="submitBufferRequest('@Url.Action("FindFeaturesInBuffer", Model)'); return false;">
+        <h4 class="list-group-item-heading">Find Features in Buffer</h4>
+        <p class="list-group-item-text">Create a buffer around a selected parcel, then mark parcels inside the buffer that are of type "MFG".</p>
+    </a>
+</div>

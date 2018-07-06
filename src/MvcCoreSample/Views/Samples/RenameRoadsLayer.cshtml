@@ -1,0 +1,13 @@
+@model MvcCoreSample.Models.MapGuideCommandModel
+@{
+    Layout = "_TaskPaneContent";
+    ViewData["Title"] = "Rename Layer";
+}
+@section Scripts {
+<script type="text/javascript">
+    parent.parent.mapFrame.Refresh();
+    parent.parent.mapFrame.ZoomToScale(12000);
+</script>
+}
+<p>Layer label has been renamed to: <strong>@ViewData["NewLabel"]</strong></p>
+<p>@Html.ActionLink("Run Again", "RenameRoadsLayer", Model)</p>

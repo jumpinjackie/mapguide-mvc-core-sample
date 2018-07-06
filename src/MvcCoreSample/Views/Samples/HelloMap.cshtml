@@ -1,0 +1,13 @@
+@model MvcCoreSample.Models.MapGuideCommandModel
+@{
+    Layout = "_TaskPaneContent";
+    ViewData["Title"] = "Hello Map";
+}
+<p>This sample shows the most basic interaction with a map.</p>
+<p>It connects to a session and queries information aout the map.</p>
+<div class="list-group">
+    <a class="list-group-item" href="@Url.Action("DisplaySpatialReference", Model)">
+        <h4 class="list-group-item-heading">Display Spatial Reference</h4>
+        <p class="list-group-item-text">Connect to MapGuide session and display basic information</p>
+    </a>
+</div>

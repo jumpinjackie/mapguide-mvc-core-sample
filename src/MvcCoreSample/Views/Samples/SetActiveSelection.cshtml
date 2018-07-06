@@ -1,0 +1,11 @@
+@model MvcCoreSample.Models.SetActiveSelectionModel
+@{
+    Layout = "_TaskPaneContent";
+    ViewData["Title"] = "Select Features";
+}
+@section Scripts {
+<script type="text/javascript">
+    parent.parent.SetSelectionXML('@Html.Raw(Model.Selection)');
+</script>
+}
+<p>Selecting parcels owned by Schmitt in District 6</p>

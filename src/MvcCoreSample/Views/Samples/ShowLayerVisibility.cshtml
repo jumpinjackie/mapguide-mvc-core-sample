@@ -1,0 +1,27 @@
+@model MvcCoreSample.Models.LayerVisibilityModel
+@{
+    Layout = "_TaskPaneContent";
+    ViewData["Title"] = "Layer Visibility";
+}
+<p>Layers, in draw order.</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Layer</th>
+            <th>GetVisible()</th>
+            <th>IsVisible()</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var layer in Model.Layers)
+    {
+    <tr>
+        <td>@layer.LayerName</td>
+        <td>@layer.GetVisibleResult</td>
+        <td>@layer.IsVisibleResult</td>
+    </tr>
+    }
+    </tbody>
+</table>
+<p><code>GetVisible()</code> returns the state of the visibility flag for a given layer (the check box in the Layers pane).</p>
+<p><code>IsVisible()</code> returns the actual visibility of a layer, based on its visibility flag, the visibility flag of any groups that include the layer, and whether the layer has a defined style for the current view scale.</p>

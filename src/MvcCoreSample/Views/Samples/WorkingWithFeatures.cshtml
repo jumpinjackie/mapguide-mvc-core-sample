@@ -1,0 +1,45 @@
+@model MvcCoreSample.Models.MapGuideCommandModel
+@{
+    Layout = "_TaskPaneContent";
+    ViewData["Title"] = "Working with Feature Data";
+}
+@section ScriptsHeader {
+<script type="text/javascript">
+    function ZoomToDistrict() {
+        parent.parent.ZoomToView(-87.727698, 43.735028, 8000, true);
+        return false;
+    }
+
+    function ListSelection()
+    {
+        xmlSel = parent.parent.mapFrame.GetSelectionXML();
+        params = [
+            "SESSION", parent.parent.mapFrame.GetSessionId(), 
+            "MAPNAME", parent.parent.mapFrame.GetMapName(),
+            "SELECTION", xmlSel
+        ];
+        pageUrl = "@Url.Action("ListSelectedFeatures", Model)";
+        parent.parent.formFrame.Submit(pageUrl, params, "taskPaneFrame");
+        return false;
+    }
+</script>
+}
+
+<div class="list-group">
+    <a class="list-group-item" href="#" onclick="ZoomToDistrict()">
+        <h4 class="list-group-item-heading">Zoom to District 6</h4>
+        <p class="list-group-item-text">Position the map to display parcels in District 6</p>
+    </a>
+    <a class="list-group-item" href="@Url.Action("QueryFeatures", Model)">
+        <h4 class="list-group-item-heading">Query Features</h4>
+        <p class="list-group-item-text">List properties in District 6 owned by Schmitt</p>
+    </a>
+    <a class="list-group-item" href="@Url.Action("SetActiveSelection", Model)">
+        <h4 class="list-group-item-heading">Set active selection</h4>
+        <p class="list-group-item-text">Select properties in District 6 owned by Schmitt</p>
+    </a>
+    <a class="list-group-item" href="#" onclick="ListSelection()">
+        <h4 class="list-group-item-heading">List selected features</h4>
+        <p class="list-group-item-text">Lists currently selected features</p>
+    </a>
+</div>

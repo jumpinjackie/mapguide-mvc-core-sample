@@ -1,7 +1,5 @@
-/artifacts
-/src/Sheboygan/Sheboygan.xproj.user
 /.vs
-/src/Sheboygan/wwwroot/lib/openlayers3-dist
-/src/Sheboygan/wwwroot/lib/bootstrap
-/src/Sheboygan/wwwroot/lib/font-awesome
-/src/Sheboygan/wwwroot/lib/jquery
+/nuget_packages
+/packages/*.nupkg
+bin
+obj
