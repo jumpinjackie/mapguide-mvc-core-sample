@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OSGeo.MapGuide;
-using System.Runtime.InteropServices;
 using System;
+using System.Runtime.InteropServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,9 +28,22 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
+/* 
+ * HACK: For preview 4 at least. We need this line below to force
+ * the OSGeo.MapGuide.Geometry assembly to be loaded into the current
+ * AppDomain. Otherwise .net proxy class type resolution will break.
+ */
+using var csFactory = new MgCoordinateSystemFactory();
+
 // Init the web tier
 string mgWebConfigPath = app.Configuration["MapGuide.WebConfigPath"];
 MapGuideApi.MgInitializeWebTier(mgWebConfigPath);
+
+var options = new RewriteOptions();
+//This is to workaround a limitation in mapguide-react-layout where a custom root cannot be set for static assets 
+//So just redirect the bad asset requests to the expected place
+options.AddRedirect("Home/dist/stdassets/(.*)", "lib/viewer/stdassets/$1");
+app.UseRewriter(options);
 
 //NOTE: https disabled for localhost. If you wish to enable, uncomment the following lines below
 //
