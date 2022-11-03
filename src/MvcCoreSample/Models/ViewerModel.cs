@@ -1,9 +1,8 @@
-namespace MvcCoreSample.Models
-{
-    public class ViewerModel
-    {
-        public string LayoutId { get; set; }
+namespace MvcCoreSample.Models;
 
-        public string SessionId { get; set; }
-    }
+public class ViewerModel
+{
+    public string LayoutId { get; set; }
+
+    public string SessionId { get; set; }
 }

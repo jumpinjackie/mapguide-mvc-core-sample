@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MapGuideDotNetApi" Version="3.1.1.9378-pre74" />
-    <PackageReference Include="Microsoft.AspNetCore.App" />
+	<PackageReference Include="OSGeo.MapGuide.MapGuideCommon" Version="4.0.0.10004" />
+    <PackageReference Include="OSGeo.MapGuide.Web" Version="4.0.0.10004" />
   </ItemGroup>
   
   <ItemGroup>

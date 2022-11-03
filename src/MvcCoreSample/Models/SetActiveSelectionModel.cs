@@ -1,7 +1,6 @@
-namespace MvcCoreSample.Models
+namespace MvcCoreSample.Models;
+
+public class SetActiveSelectionModel : MapGuideCommandModel
 {
-    public class SetActiveSelectionModel : MapGuideCommandModel
-    {
-        public string Selection { get; set; }
-    }
+    public string Selection { get; set; }
 }

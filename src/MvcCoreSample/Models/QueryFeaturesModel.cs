@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 
-namespace MvcCoreSample.Models
+namespace MvcCoreSample.Models;
+
+public class QueryFeaturesModel : MapGuideCommandModel
 {
-    public class QueryFeaturesModel : MapGuideCommandModel
-    {
-        public List<string> Addresses { get; set; }
-    }
+    public List<string> Addresses { get; set; }
 }

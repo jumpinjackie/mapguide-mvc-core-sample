@@ -1,7 +1,6 @@
-namespace MvcCoreSample.Models
+namespace MvcCoreSample.Models;
+
+public class BufferModel : MapGuideCommandModel
 {
-    public class BufferModel : MapGuideCommandModel
-    {
-        public string Selection { get; set; }
-    }
+    public string Selection { get; set; }
 }
