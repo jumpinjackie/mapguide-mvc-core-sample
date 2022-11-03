@@ -3,4 +3,4 @@
 /packages/*.nupkg
 bin
 obj
-.user
+*.csproj.user
