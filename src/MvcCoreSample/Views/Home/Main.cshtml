@@ -2,7 +2,10 @@
     ViewData["Title"] = "Viewer";
 }
 @section ScriptsHeader {
+    <link rel="stylesheet" href="~/lib/viewer/vendor.css" type="text/css" />
+    <link rel="stylesheet" href="~/lib/viewer/viewer.css" type="text/css" />
     <script type="text/javascript" src="~/lib/viewer/es6-promise.auto.min.js"></script>
+    <script type="text/javascript" src="~/lib/viewer/vendor.js"></script>
     <script type="text/javascript" src="~/lib/viewer/viewer.js"></script>
     <style type="text/css">
         /* Prevent scrollbars due to floating modal dialogs going past the bounds of the root element */
@@ -45,10 +48,10 @@
         var viewer = new MapGuide.Application();
         viewer.mount(el, {
             layout: "ajax-viewer",
-            session: "@Model.SessionId",
             resourceId: "@Model.LayoutId",
-            agent: {
-                uri: "@Url.Action("Agent", "MapAgent")"
+            mapguide: {
+                session: "@Model.SessionId",
+                agentUri: "@Url.Action("Agent", "MapAgent")"
             }
         });
     </script>
