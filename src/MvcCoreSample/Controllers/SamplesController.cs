@@ -1,12 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Xml;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using MvcCoreSample.Extensions;
 using MvcCoreSample.Models;
 using OSGeo.MapGuide;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml;
 
 namespace MvcCoreSample.Controllers;
 

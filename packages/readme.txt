@@ -1,1 +1,1 @@
-Download the latest NuGet package from: https://github.com/jumpinjackie/mapguide-api-bindings/releases
+Copy the .nuget package files from the Web/nuget directory of your MGOS install into this directory

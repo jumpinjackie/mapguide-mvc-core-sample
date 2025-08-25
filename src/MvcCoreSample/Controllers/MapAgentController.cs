@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace MvcCoreSample.Controllers;
 
-// This is a port of https://github.com/jumpinjackie/mapagent-dotnet-sample to MVC Core 2.1
+// This is a port of https://github.com/jumpinjackie/mapagent-dotnet-sample to ASP.net core 8.0
 
 public class MapAgentController : Controller
 {
@@ -103,7 +103,7 @@ public class MapAgentController : Controller
         //These are 401-class errors
         if (statusMessage.Equals("MgAuthenticationFailedException") || statusMessage.Equals("MgUnauthorizedAccessException"))
         {
-            Response.Headers.Add("WWW-Authenticate", "Basic realm=\"mapguide\"");
+            Response.Headers["WWW-Authenticate"] = "Basic realm=\"mapguide\"";
             return Unauthorized();
         }
         else
@@ -287,7 +287,7 @@ public class MapAgentController : Controller
 
     IActionResult MgUnauthorized()
     {
-        Response.Headers.Add("WWW-Authenticate", "Basic realm=\"mapguide\"");
+        Response.Headers["WWW-Authenticate"] = "Basic realm=\"mapguide\"";
         return Unauthorized();
     }
 }
