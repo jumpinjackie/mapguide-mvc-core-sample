@@ -28,13 +28,6 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-/* 
- * HACK: For preview 4 at least. We need this line below to force
- * the OSGeo.MapGuide.Geometry assembly to be loaded into the current
- * AppDomain. Otherwise .net proxy class type resolution will break.
- */
-using var csFactory = new MgCoordinateSystemFactory();
-
 // Init the web tier
 string mgWebConfigPath = app.Configuration["MapGuide.WebConfigPath"];
 MapGuideApi.MgInitializeWebTier(mgWebConfigPath);
