@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="OSGeo.MapGuide.Foundation" Version="4.0.0.10177" />
-	<PackageReference Include="OSGeo.MapGuide.Geometry" Version="4.0.0.10177" />
-	<PackageReference Include="OSGeo.MapGuide.PlatformBase" Version="4.0.0.10177" />
-	<PackageReference Include="OSGeo.MapGuide.MapGuideCommon" Version="4.0.0.10177" />
-    <PackageReference Include="OSGeo.MapGuide.Web" Version="4.0.0.10177" />
+	<PackageReference Include="OSGeo.MapGuide.Foundation" Version="4.0.0.10185" />
+	<PackageReference Include="OSGeo.MapGuide.Geometry" Version="4.0.0.10185" />
+	<PackageReference Include="OSGeo.MapGuide.PlatformBase" Version="4.0.0.10185" />
+	<PackageReference Include="OSGeo.MapGuide.MapGuideCommon" Version="4.0.0.10185" />
+    <PackageReference Include="OSGeo.MapGuide.Web" Version="4.0.0.10185" />
   </ItemGroup>
   
   <ItemGroup>

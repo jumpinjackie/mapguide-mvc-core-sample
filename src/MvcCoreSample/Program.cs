@@ -16,6 +16,12 @@ if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 }
 else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
 {
+    /* 
+     * HACK: For non-Windows platforms at least, we need this line below to 
+     * force the OSGeo.MapGuide.Geometry assembly to be loaded into the current
+     * AppDomain. Otherwise .net proxy class type resolution will break.
+     */
+    using var csFactory = new MgCoordinateSystemFactory();
     builder.Configuration.AddJsonFile("appsettings.linux.json");
 }
 else

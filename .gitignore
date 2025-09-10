@@ -4,3 +4,5 @@
 bin
 obj
 *.csproj.user
+/pub_linux
+/pub_win
