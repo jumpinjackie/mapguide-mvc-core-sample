@@ -39,8 +39,8 @@ You have MapGuide installed, but don't want to bother with the motions of gettin
 
 Thanks to the publishing features of .net Core, a pre-built self-contained version of this example is available for you to download:
 
- * Windows (64-bit): [Download](https://github.com/jumpinjackie/mapguide-mvc-core-sample/releases/download/v0.2/MapGuide_MvcCoreSample_Windows_x64.zip)
- * Ubuntu 14.04 64-bit: [Download](https://github.com/jumpinjackie/mapguide-mvc-core-sample/releases/download/v0.2/MapGuide_MvcCoreSample_Linux_x64.zip)
+ * Windows 64-bit: [Download](https://github.com/jumpinjackie/mapguide-mvc-core-sample/releases/download/v0.2/MapGuide_MvcCoreSample_Windows_x64.zip)
+ * Linuxs 64-bit: [Download](https://github.com/jumpinjackie/mapguide-mvc-core-sample/releases/download/v0.2/MapGuide_MvcCoreSample_Linux_x64.zip)
 
 All the required dependencies (except for MapGuide itself) are included. All you need is an existing MapGuide Open Source 4.0 RC1 or newer installation with the Sheboygan dataset loaded.
 
