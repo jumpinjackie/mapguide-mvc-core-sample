@@ -25,9 +25,13 @@ This sample code serves multiple purposes:
 # Building and running the Sample
 
 From the root of your git clone, run:
-    * `dotnet restore`
-    * `dotnet build`
-    * `dotnet run`
+
+```
+dotnet restore
+dotnet build
+cd src/MvcCoreSample
+dotnet run
+```
 
 # Installing and trying out the self-contained sample
 
